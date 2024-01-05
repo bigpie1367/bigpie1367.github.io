@@ -20,12 +20,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"bigpie1367.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="&nbsp;&nbsp; 서론Nginx(엔진엑스) 에 대해 찾아보는 와중 기존 내가 알고있던 웹 서버(Web Server)에 대한 개념이 상충하는 것이 있어 이를 정리하고자 한다. &nbsp;&nbsp; 본론Web Server위키백과에 정의된 웹 서버에 대한 정의는 다음과 같다  웹 서버(Web server)는 다음의 두 가지 뜻 가운데 하나이다.  웹 서버">
+    <meta name="description" content="&nbsp;&nbsp; 서론Nginx(엔진엑스) 에 대해 찾아보는 와중 기존 내가 알고있던 웹 서버(Web Server)에 대한 개념이 상충하는 것이 있어 이를 정리하고자 한다. 본 글에서는 Web Server와 WAS의 개념 비교부터 시작하여 가장 보편적으로 사용되는 Web Server 엔진 및 실제 사용될 수 있는 프로젝트 구성을 Docker-compo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Web Server부터 Nginx까지">
 <meta property="og:url" content="https://bigpie1367.github.io/2024/01/05/Web-Server%EB%B6%80%ED%84%B0-Nginx%EA%B9%8C%EC%A7%80/index.html">
 <meta property="og:site_name" content="no_intellectual.log">
-<meta property="og:description" content="&nbsp;&nbsp; 서론Nginx(엔진엑스) 에 대해 찾아보는 와중 기존 내가 알고있던 웹 서버(Web Server)에 대한 개념이 상충하는 것이 있어 이를 정리하고자 한다. &nbsp;&nbsp; 본론Web Server위키백과에 정의된 웹 서버에 대한 정의는 다음과 같다  웹 서버(Web server)는 다음의 두 가지 뜻 가운데 하나이다.  웹 서버">
+<meta property="og:description" content="&nbsp;&nbsp; 서론Nginx(엔진엑스) 에 대해 찾아보는 와중 기존 내가 알고있던 웹 서버(Web Server)에 대한 개념이 상충하는 것이 있어 이를 정리하고자 한다. 본 글에서는 Web Server와 WAS의 개념 비교부터 시작하여 가장 보편적으로 사용되는 Web Server 엔진 및 실제 사용될 수 있는 프로젝트 구성을 Docker-compo">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/fec035ee-2eab-4401-80a0-81dfeb3968c2">
 <meta property="og:image" content="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/178542e1-4112-48da-9b9b-e515acf2fafe">
@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/b6eefe31-9a4f-4f4d-a7e6-8979291ff960">
 <meta property="og:image" content="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/2f9cea91-6965-48b2-944e-949dd419bfb6">
 <meta property="article:published_time" content="2024-01-05T03:42:10.000Z">
-<meta property="article:modified_time" content="2024-01-05T04:52:04.389Z">
+<meta property="article:modified_time" content="2024-01-05T05:15:10.613Z">
 <meta property="article:author" content="Suin Roh">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/fec035ee-2eab-4401-80a0-81dfeb3968c2">
@@ -119,7 +119,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%EC%84%9C%EB%A1%A0"><span class="nav-number">1.</span> <span class="nav-text">서론</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%EB%B3%B8%EB%A1%A0"><span class="nav-number">2.</span> <span class="nav-text">본론</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-Server"><span class="nav-number">2.1.</span> <span class="nav-text">Web Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WAS-Web-Application-Server"><span class="nav-number">2.2.</span> <span class="nav-text">WAS (Web Application Server)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-WAS-%EC%84%9C%EB%B2%84-%EB%B6%80%ED%95%98-%EB%B0%A9%EC%A7%80"><span class="nav-number">2.2.1.</span> <span class="nav-text">1. WAS 서버 부하 방지</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%EB%A1%9C%EC%A7%81-%EB%B6%84%EB%A6%AC%EB%A5%BC-%ED%86%B5%ED%95%9C-%EB%B3%B4%EC%95%88-%EA%B0%95%ED%99%94"><span class="nav-number">2.2.2.</span> <span class="nav-text">2. 로직 분리를 통한 보안 강화</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%EB%8B%A4%EC%88%98%EC%9D%98-AWS-%EC%84%9C%EB%B2%84-%EC%97%B0%EA%B2%B0"><span class="nav-number">2.2.3.</span> <span class="nav-text">3. 다수의 AWS 서버 연결</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%EC%97%AC%EB%9F%AC-%EC%9B%B9-%EC%96%B4%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98%EA%B3%BC%EC%9D%98-%EC%97%B0%EA%B2%B0"><span class="nav-number">2.2.4.</span> <span class="nav-text">4. 여러 웹 어플리케이션과의 연결</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx"><span class="nav-number">2.3.</span> <span class="nav-text">Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx-to-WSGI"><span class="nav-number">2.4.</span> <span class="nav-text">Nginx to WSGI</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%EC%8B%A4%EC%8A%B5"><span class="nav-number">3.</span> <span class="nav-text">실습</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%EC%B0%B8%EA%B3%A0-%EB%AC%B8%ED%97%8C"><span class="nav-number">3.1.</span> <span class="nav-text">참고 문헌</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%EC%84%9C%EB%A1%A0"><span class="nav-number">1.</span> <span class="nav-text">서론</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%EB%B3%B8%EB%A1%A0"><span class="nav-number">2.</span> <span class="nav-text">본론</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-Server"><span class="nav-number">2.1.</span> <span class="nav-text">Web Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WAS-Web-Application-Server"><span class="nav-number">2.2.</span> <span class="nav-text">WAS (Web Application Server)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-WAS-%EC%84%9C%EB%B2%84-%EB%B6%80%ED%95%98-%EB%B0%A9%EC%A7%80"><span class="nav-number">2.2.1.</span> <span class="nav-text">1. WAS 서버 부하 방지</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%EB%A1%9C%EC%A7%81-%EB%B6%84%EB%A6%AC%EB%A5%BC-%ED%86%B5%ED%95%9C-%EB%B3%B4%EC%95%88-%EA%B0%95%ED%99%94"><span class="nav-number">2.2.2.</span> <span class="nav-text">2. 로직 분리를 통한 보안 강화</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%EB%8B%A4%EC%88%98%EC%9D%98-AWS-%EC%84%9C%EB%B2%84-%EC%97%B0%EA%B2%B0"><span class="nav-number">2.2.3.</span> <span class="nav-text">3. 다수의 AWS 서버 연결</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%EC%97%AC%EB%9F%AC-%EC%9B%B9-%EC%96%B4%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98%EA%B3%BC%EC%9D%98-%EC%97%B0%EA%B2%B0"><span class="nav-number">2.2.4.</span> <span class="nav-text">4. 여러 웹 어플리케이션과의 연결</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx"><span class="nav-number">2.3.</span> <span class="nav-text">Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx-to-WSGI"><span class="nav-number">2.4.</span> <span class="nav-text">Nginx to WSGI</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%EC%8B%A4%EC%8A%B5"><span class="nav-number">3.</span> <span class="nav-text">실습</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%EC%B0%B8%EA%B3%A0-%EB%AC%B8%ED%97%8C"><span class="nav-number">4.</span> <span class="nav-text">참고 문헌</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -203,7 +203,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2024-01-05 12:42:10 / Modified: 13:52:04" itemprop="dateCreated datePublished" datetime="2024-01-05T12:42:10+09:00">2024-01-05</time>
+      <time title="Created: 2024-01-05 12:42:10 / Modified: 14:15:10" itemprop="dateCreated datePublished" datetime="2024-01-05T12:42:10+09:00">2024-01-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -225,7 +225,7 @@
     
     
     <div class="post-body" itemprop="articleBody"><p>&nbsp;<br>&nbsp;</p>
-<h1 id="서론"><a href="#서론" class="headerlink" title="서론"></a>서론</h1><p><strong>Nginx</strong>(<strong>엔진엑스</strong>) 에 대해 찾아보는 와중 기존 내가 알고있던 웹 서버(Web Server)에 대한 개념이 상충하는 것이 있어 이를 정리하고자 한다.</p>
+<h1 id="서론"><a href="#서론" class="headerlink" title="서론"></a>서론</h1><p><strong>Nginx</strong>(<strong>엔진엑스</strong>) 에 대해 찾아보는 와중 기존 내가 알고있던 <strong>웹 서버</strong>(<strong>Web Server</strong>)에 대한 개념이 상충하는 것이 있어 이를 정리하고자 한다. 본 글에서는 <strong>Web Server</strong>와 <strong>WAS</strong>의 개념 비교부터 시작하여 가장 보편적으로 사용되는 <strong>Web Server</strong> 엔진 및 실제 사용될 수 있는 프로젝트 구성을 <strong>Docker-compose</strong>를 통해 구성해보고자 한다.</p>
 <p>&nbsp;<br>&nbsp;</p>
 <h1 id="본론"><a href="#본론" class="headerlink" title="본론"></a>본론</h1><h2 id="Web-Server"><a href="#Web-Server" class="headerlink" title="Web Server"></a>Web Server</h2><p>위키백과에 정의된 웹 서버에 대한 정의는 다음과 같다</p>
 <blockquote>
@@ -235,20 +235,21 @@
 <li>웹 서버 (하드웨어): 위에 언급한 기능을 제공하는 컴퓨터 프로그램을 실행하는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%BB%B4%ED%93%A8%ED%84%B0">컴퓨터</a></li>
 </ol>
 <p><strong>웹 서버</strong>(web server)는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/HTTP">HTTP</a> 또는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/HTTPS">HTTPS</a>를 통해 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9B%B9_%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80">웹 브라우저</a>에서 요청하는 [HTML 문서나 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8">오브젝트</a>(<a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9D%B4%EB%AF%B8%EC%A7%80_%ED%8C%8C%EC%9D%BC">이미지 파일</a> 등)을 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%A0%84%EC%86%A1_(%EC%BB%B4%ED%93%A8%ED%8C%85)">전송</a>해주는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%84%9C%EB%B9%84%EC%8A%A4%ED%98%95_%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4">서비스 프로그램</a>을 말한다. 웹 서버 소프트웨어를 구동하는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%ED%95%98%EB%93%9C%EC%9B%A8%EC%96%B4">하드웨어</a>도 웹 서버라고 해서 혼동하는 경우가 간혹 있다.</p>
-<p>출처 : <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9B%B9_%EC%84%9C%EB%B2%84">https://ko.wikipedia.org/wiki/웹_서버</a></p>
+<p>_출처 : <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9B%B9_%EC%84%9C%EB%B2%84">https://ko.wikipedia.org/wiki/웹_서버</a>_</p>
 </blockquote>
 <p>위에 정의된 바와 같이 <strong>웹 서버</strong>란 <strong>HTTP, HTTPS</strong> 통신 프로토콜을 통해 사용자가 요청하는 <strong>HTML 문서</strong>나 <strong>오브젝트</strong>, 즉 <strong>정적인 파일</strong>들을 전달해주는 서비스 프로그램을 말한다. 다만 이러한 정적인 페이지들의 경우 과거에는 충분하였을 지 모르나 기술이 발달한 요즘 시대에는 부족한 것이 사실이다. 이러한 태생적인 한계를 극복하기 위한 것이 <strong>WAS(Web Application Server)</strong> 이다.</p>
-<p>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;</p>
+<p>&nbsp;<br>&nbsp;</p>
 <h2 id="WAS-Web-Application-Server"><a href="#WAS-Web-Application-Server" class="headerlink" title="WAS (Web Application Server)"></a>WAS (Web Application Server)</h2><p>마찬가지로 위키백과에 정의된 웹 어플리케이션 서버에 대한 정의는 다음과 같다.</p>
 <blockquote>
 <p><strong>웹 애플리케이션 서버</strong>(Web Application Server, 약자 <strong>WAS</strong>)는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9B%B9_%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98">웹 애플리케이션</a>과 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%84%9C%EB%B2%84">서버</a> 환경을 만들어 동작시키는 기능을 제공하는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4_%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC">소프트웨어 프레임워크</a>이다.<a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9B%B9_%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98_%EC%84%9C%EB%B2%84#cite_note-1">[1]</a> 인터넷 상에서 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/HTTP">HTTP</a>를 통해 사용자 컴퓨터나 장치에 애플리케이션을 수행해 주는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EB%AF%B8%EB%93%A4%EC%9B%A8%EC%96%B4">미들웨어</a>(소프트웨어 엔진)로 볼 수 있다. 웹 애플리케이션 서버는 동적 서버 콘텐츠를 수행하는 것으로 일반적인 웹 서버와 구별이 되며, 주로 데이터베이스 서버와 같이 수행이 된다. 한국에서는 일반적으로 “WAS” 또는 “WAS S&#x2F;W”로 통칭하고 있으며 공공기관에서는 “웹 응용 서버”로 사용되고, 영어권에서는 “Application Server” (약자 AS)로 불린다.</p>
-<p>출처 : <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Application_server">https://en.wikipedia.org/wiki/Application_server</a></p>
+<p><em>출처 : <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Application_server">https://en.wikipedia.org/wiki/Application_server</a></em></p>
 </blockquote>
 <p>즉 <strong>웹 애플리케이션 서버</strong>(이후 WAS)는 우리가 통상적으로 인식하고 있는 웹 서버의 개념과 동일하다고 보면 된다. 사용자의 요청이 단순 정적인 파일 서빙으로 해결이 안 될 경우, 즉 사용자마다 서로 다른 페이지를 보여줘야 허거나 특정 비지니스 로직, 혹은 DB 와의 상호작용이 필요한 경우가 이에 해당된다.</p>
-<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/fec035ee-2eab-4401-80a0-81dfeb3968c2" alt="출처 : https://dkswnkk.tistory.com/503?category=551275" title="https://dkswnkk.tistory.com/503?category=551275"></p>
+<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/fec035ee-2eab-4401-80a0-81dfeb3968c2"><em>출처 : <a target="_blank" rel="noopener" href="https://dkswnkk.tistory.com/503?category=551275">https://dkswnkk.tistory.com/503?category=551275</a></em></p>
 <p><strong>WAS</strong>는 위 이미지와 같이 <strong>Web Server</strong>와 <strong>Web Container</strong>로 이루어져 있다. 다만 통상적인 개발 과정에서는 <strong>WAS</strong>와 <strong>Web Server</strong>를 분리하여 개발하는 경우가 잦다. 아래와 같은 구조를 의미한다.</p>
-<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/178542e1-4112-48da-9b9b-e515acf2fafe" alt="출처 : https://dkswnkk.tistory.com/503?category=551275" title="https://dkswnkk.tistory.com/503?category=551275"></p>
+<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/178542e1-4112-48da-9b9b-e515acf2fafe" title="https://dkswnkk.tistory.com/503?category=551275"><em>출처 : <a target="_blank" rel="noopener" href="https://dkswnkk.tistory.com/503?category=551275">https://dkswnkk.tistory.com/503?category=551275</a></em></p>
 <p>즉 1차적으로 사용자가 요청한 내용을 <strong>Web Server</strong>에서 처리한다. 해당 요청이 단순 정적인 파일 서빙으로 해결될 수 있는 문제의 경우 <strong>Web Server</strong>가 자체적으로 해당 파일을 서빙하여 해결한다. 다만 <strong>비즈니스 로직</strong>이나 <strong>DB 조회</strong>가 필요한 <strong>동적인 파일</strong>의 경우 <strong>WAS</strong>에 요청하여 해당 요청을 처리한다.</p>
+<p>&nbsp;</p>
 <p>이와 같은 구조로 구성할 경우 아래와 같은 장점을 얻을 수 있다.</p>
 <h3 id="1-WAS-서버-부하-방지"><a href="#1-WAS-서버-부하-방지" class="headerlink" title="1. WAS 서버 부하 방지"></a>1. WAS 서버 부하 방지</h3><p><strong>WAS</strong> 서버는 실제 비즈니스 로직 및 DB 조회를 담당하는데, 단순 정적 파일 또한 WAS에서 서빙할 경우 다른 작업으로 인해 불필요한 딜레이가 발생할 수 있다.</p>
 <h3 id="2-로직-분리를-통한-보안-강화"><a href="#2-로직-분리를-통한-보안-강화" class="headerlink" title="2. 로직 분리를 통한 보안 강화"></a>2. 로직 분리를 통한 보안 강화</h3><p>일반적인 사용자들은 <strong>Web Server</strong>에만 접근하고 <strong>WAS</strong>는 알 필요가 없다. 따라서 사용자들에게 노출되는 부분은 <strong>Web Server</strong>로 한정지어 불필요한 위험으로부터 분리하여 비즈니스 로직 등 중요 데이터들을 안전하게 지킬 수 있다.</p>
@@ -257,11 +258,12 @@
 <p>&nbsp;<br>&nbsp;</p>
 <h2 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h2><p><strong>Nginx</strong>(<strong>엔진엑스</strong>)란 <strong>Web Server</strong>의 일종으로, 현재 가장 상용화 된 방식 중 하나이다. 과거엔 <strong>Apahce</strong>(<strong>아파치</strong>)를 활용하여 <strong>Web Server</strong>를 구현하였는데, <strong>Apache</strong>는 쓰레드 방식으로 하나의 요청당 하나의 쓰레드가 새로 생성되어 해당 요청을 처리하는 방식이다. 이러한 방식의 경우 쓰레드를 생성하고 또 요청을 처리하기까지 많은 오버헤드가 발생하게 되어 사용에 꺼려지고 있다.</p>
 <p><strong>Nginx</strong>는 이와 대조적으로 사전 정의된 설정값(*.conf)에 따라 <strong>Worker Process</strong>가 생성되고, 이 <strong>Worker Process</strong>가 일정 시간(<strong>keep alive</strong>)동안 유지되어 사용자의 요청(<strong>Connection</strong>)을 처리하는 방식이다. 이렇게 보면 <strong>Apache</strong>와 큰 차이가 없어 보이지만 가장 큰 핵심은 사용자의 요청을 비동기적으로 처리한다는 것이다. 사용자의 요청은 <strong>Queue</strong>에 대기상태로 쌓이고 유휴상태인 <strong>Worker Process</strong>가 해당 작업을 맡아 처리하는 방식이다. 이를 <strong>Event-Driven</strong> 방식이라 한다.</p>
-<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/7a8a34ac-8c61-49af-ab95-fe9f0fef76a9" alt="출처 : https://whatisthenext.tistory.com/123" title="https://whatisthenext.tistory.com/123"></p>
+<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/7a8a34ac-8c61-49af-ab95-fe9f0fef76a9"><em>출처 : <a target="_blank" rel="noopener" href="https://whatisthenext.tistory.com/123">https://whatisthenext.tistory.com/123</a></em></p>
+<p>&nbsp;</p>
 <p>두 Web Server간의 성능 차이를 비교해보면 아래 이미지와 같다.</p>
-<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/f91e3a66-deb9-461a-9194-5d542d10ff08" alt="출처 : https://statuslist.app/nginx/variables/" title="https://statuslist.app/nginx/variables/"></p>
+<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/f91e3a66-deb9-461a-9194-5d542d10ff08"><em>출처 : <a target="_blank" rel="noopener" href="https://statuslist.app/nginx/variables/">https://statuslist.app/nginx/variables/</a></em></p>
 <p>Connection 수에 따른 메모리 사용량 비교</p>
-<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/b6eefe31-9a4f-4f4d-a7e6-8979291ff960" alt="출처 : https://statuslist.app/nginx/variables/" title="https://statuslist.app/nginx/variables/"></p>
+<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/b6eefe31-9a4f-4f4d-a7e6-8979291ff960"><em>출처 : <a target="_blank" rel="noopener" href="https://statuslist.app/nginx/variables/">https://statuslist.app/nginx/variables/</a></em></p>
 <p>동시 요청된 Connection 수에 따른 처리 속도 비교</p>
 <p>&nbsp;<br>&nbsp;</p>
 <h2 id="Nginx-to-WSGI"><a href="#Nginx-to-WSGI" class="headerlink" title="Nginx to WSGI"></a>Nginx to WSGI</h2><p><strong>WSGI</strong>(<strong>위스키</strong>)는 <strong>Web Server Gateway Interface</strong>의 약자로, <strong>Web Server</strong>와 <strong>Python</strong> 기반의 WAS를 연결해주기 위한 통신 규약이다. 일반적인 <strong>Apache</strong>, <strong>Nginx와</strong> 같은 <strong>Web Server</strong>는 <strong>Python</strong>을 모르기 때문에 <strong>Django</strong>(<strong>장고</strong>)나 <strong>Flask</strong>(<strong>플라스크</strong>) 기반으로 구현된 <strong>WAS</strong>에 요청을 보낼 수 없다. <strong>WSGI</strong>는 그 사이에서 이를 중계해주는 역할이다.</p>
@@ -275,7 +277,7 @@
 <li>gunicorn can be configured to fine grades depending on your setup</li>
 <li>gunicorn is actively designed and maintained with security in mind</li>
 </ul>
-<p>출처 : <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/35657332/django-difference-between-using-server-through-manage-py-and-other-servers-like">https://stackoverflow.com/questions/35657332/django-difference-between-using-server-through-manage-py-and-other-servers-like</a></p>
+<p><em>출처 : <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/35657332/django-difference-between-using-server-through-manage-py-and-other-servers-like">https://stackoverflow.com/questions/35657332/django-difference-between-using-server-through-manage-py-and-other-servers-like</a></em></p>
 </blockquote>
 <p>&nbsp;<br>&nbsp;</p>
 <h1 id="실습"><a href="#실습" class="headerlink" title="실습"></a>실습</h1><p>실습은 <strong>Docker-compose</strong>를 통해 <strong>Postgres</strong>, <strong>Django</strong>, <strong>Nginx</strong> 각각에 해당하는 <strong>Docker Container</strong>를 만들어 구성된 환경에서 진행되었다. 본 실습은 <strong>Docker-compose</strong>를 통해 각 <strong>Container</strong>간의 연결에 초점을 맞춘 관계로 <strong>Django</strong> 프로젝트 설정에 관한 내용은 생략하도록 하겠다. <code>local_settings.py</code>를 통해 <strong>DB</strong> 관련 설정을 해주었단 것만 주의하면 큰 문제는 없을 것이다. 프로젝트 디렉토리 구조는 아래와 같다.</p>
@@ -296,7 +298,7 @@
 <img width="1792" alt="image" src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/2f9cea91-6965-48b2-944e-949dd419bfb6">
 
 <p>&nbsp;<br>&nbsp;</p>
-<h2 id="참고-문헌"><a href="#참고-문헌" class="headerlink" title="참고 문헌"></a>참고 문헌</h2><p><a href="%5Bhttps://dkswnkk.tistory.com/503?category=551275%5D(https://dkswnkk.tistory.com/503?category=551275)">Web Server와 WAS의 차이</a></p>
+<h1 id="참고-문헌"><a href="#참고-문헌" class="headerlink" title="참고 문헌"></a>참고 문헌</h1><p><a href="%5Bhttps://dkswnkk.tistory.com/503?category=551275%5D(https://dkswnkk.tistory.com/503?category=551275)">Web Server와 WAS의 차이</a></p>
 <p><a href="%5Bhttps://velog.io/@bluewind8791/WAS-vs-web-server%5D(https://velog.io/@bluewind8791/WAS-vs-web-server)">WAS vs 웹 서버</a></p>
 <p><a href="%5Bhttps://velog.io/@gillog/Web-Server%EC%99%80-Web-Application-Server%EC%9D%98-%EC%B0%A8%EC%9D%B4%5D(https://velog.io/@gillog/Web-Server%EC%99%80-Web-Application-Server%EC%9D%98-%EC%B0%A8%EC%9D%B4)">Web Server와 Web Application Server</a></p>
 <p><a href="%5Bhttps://velog.io/@leesomyoung/%EC%9B%B9-%EC%84%9C%EB%B2%84-vs-WAS%5D(https://velog.io/@leesomyoung/%EC%9B%B9-%EC%84%9C%EB%B2%84-vs-WAS)">웹 서버 vs WAS</a></p>
