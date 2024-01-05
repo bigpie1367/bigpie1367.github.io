@@ -192,7 +192,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2024-01-05 12:42:10 / Modified: 14:15:10" itemprop="dateCreated datePublished" datetime="2024-01-05T12:42:10+09:00">2024-01-05</time>
+      <time title="Created: 2024-01-05 12:42:10 / Modified: 14:33:03" itemprop="dateCreated datePublished" datetime="2024-01-05T12:42:10+09:00">2024-01-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -225,7 +225,7 @@
 <li>웹 서버 (하드웨어): 위에 언급한 기능을 제공하는 컴퓨터 프로그램을 실행하는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%BB%B4%ED%93%A8%ED%84%B0">컴퓨터</a></li>
 </ol>
 <p><strong>웹 서버</strong>(web server)는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/HTTP">HTTP</a> 또는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/HTTPS">HTTPS</a>를 통해 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9B%B9_%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80">웹 브라우저</a>에서 요청하는 [HTML 문서나 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8">오브젝트</a>(<a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9D%B4%EB%AF%B8%EC%A7%80_%ED%8C%8C%EC%9D%BC">이미지 파일</a> 등)을 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%A0%84%EC%86%A1_(%EC%BB%B4%ED%93%A8%ED%8C%85)">전송</a>해주는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%84%9C%EB%B9%84%EC%8A%A4%ED%98%95_%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4">서비스 프로그램</a>을 말한다. 웹 서버 소프트웨어를 구동하는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%ED%95%98%EB%93%9C%EC%9B%A8%EC%96%B4">하드웨어</a>도 웹 서버라고 해서 혼동하는 경우가 간혹 있다.</p>
-<p>_출처 : <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9B%B9_%EC%84%9C%EB%B2%84">https://ko.wikipedia.org/wiki/웹_서버</a>_</p>
+<p><em>출처 : <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9B%B9_%EC%84%9C%EB%B2%84">https://ko.wikipedia.org/wiki/웹_서버</a></em></p>
 </blockquote>
 <p>위에 정의된 바와 같이 <strong>웹 서버</strong>란 <strong>HTTP, HTTPS</strong> 통신 프로토콜을 통해 사용자가 요청하는 <strong>HTML 문서</strong>나 <strong>오브젝트</strong>, 즉 <strong>정적인 파일</strong>들을 전달해주는 서비스 프로그램을 말한다. 다만 이러한 정적인 페이지들의 경우 과거에는 충분하였을 지 모르나 기술이 발달한 요즘 시대에는 부족한 것이 사실이다. 이러한 태생적인 한계를 극복하기 위한 것이 <strong>WAS(Web Application Server)</strong> 이다.</p>
 <p>&nbsp;<br>&nbsp;</p>
@@ -236,8 +236,10 @@
 </blockquote>
 <p>즉 <strong>웹 애플리케이션 서버</strong>(이후 WAS)는 우리가 통상적으로 인식하고 있는 웹 서버의 개념과 동일하다고 보면 된다. 사용자의 요청이 단순 정적인 파일 서빙으로 해결이 안 될 경우, 즉 사용자마다 서로 다른 페이지를 보여줘야 허거나 특정 비지니스 로직, 혹은 DB 와의 상호작용이 필요한 경우가 이에 해당된다.</p>
 <p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/fec035ee-2eab-4401-80a0-81dfeb3968c2"><em>출처 : <a target="_blank" rel="noopener" href="https://dkswnkk.tistory.com/503?category=551275">https://dkswnkk.tistory.com/503?category=551275</a></em></p>
+<p>&nbsp;</p>
 <p><strong>WAS</strong>는 위 이미지와 같이 <strong>Web Server</strong>와 <strong>Web Container</strong>로 이루어져 있다. 다만 통상적인 개발 과정에서는 <strong>WAS</strong>와 <strong>Web Server</strong>를 분리하여 개발하는 경우가 잦다. 아래와 같은 구조를 의미한다.</p>
-<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/178542e1-4112-48da-9b9b-e515acf2fafe" title="https://dkswnkk.tistory.com/503?category=551275"><em>출처 : <a target="_blank" rel="noopener" href="https://dkswnkk.tistory.com/503?category=551275">https://dkswnkk.tistory.com/503?category=551275</a></em></p>
+<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/178542e1-4112-48da-9b9b-e515acf2fafe"><em>출처 : <a target="_blank" rel="noopener" href="https://dkswnkk.tistory.com/503?category=551275">https://dkswnkk.tistory.com/503?category=551275</a></em></p>
+<p>&nbsp;</p>
 <p>즉 1차적으로 사용자가 요청한 내용을 <strong>Web Server</strong>에서 처리한다. 해당 요청이 단순 정적인 파일 서빙으로 해결될 수 있는 문제의 경우 <strong>Web Server</strong>가 자체적으로 해당 파일을 서빙하여 해결한다. 다만 <strong>비즈니스 로직</strong>이나 <strong>DB 조회</strong>가 필요한 <strong>동적인 파일</strong>의 경우 <strong>WAS</strong>에 요청하여 해당 요청을 처리한다.</p>
 <p>&nbsp;</p>
 <p>이와 같은 구조로 구성할 경우 아래와 같은 장점을 얻을 수 있다.</p>
@@ -252,8 +254,10 @@
 <p>&nbsp;</p>
 <p>두 Web Server간의 성능 차이를 비교해보면 아래 이미지와 같다.</p>
 <p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/f91e3a66-deb9-461a-9194-5d542d10ff08"><em>출처 : <a target="_blank" rel="noopener" href="https://statuslist.app/nginx/variables/">https://statuslist.app/nginx/variables/</a></em></p>
+<p>&nbsp;</p>
 <p>Connection 수에 따른 메모리 사용량 비교</p>
 <p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/b6eefe31-9a4f-4f4d-a7e6-8979291ff960"><em>출처 : <a target="_blank" rel="noopener" href="https://statuslist.app/nginx/variables/">https://statuslist.app/nginx/variables/</a></em></p>
+<p>&nbsp;</p>
 <p>동시 요청된 Connection 수에 따른 처리 속도 비교</p>
 <p>&nbsp;<br>&nbsp;</p>
 <h2 id="Nginx-to-WSGI"><a href="#Nginx-to-WSGI" class="headerlink" title="Nginx to WSGI"></a>Nginx to WSGI</h2><p><strong>WSGI</strong>(<strong>위스키</strong>)는 <strong>Web Server Gateway Interface</strong>의 약자로, <strong>Web Server</strong>와 <strong>Python</strong> 기반의 WAS를 연결해주기 위한 통신 규약이다. 일반적인 <strong>Apache</strong>, <strong>Nginx와</strong> 같은 <strong>Web Server</strong>는 <strong>Python</strong>을 모르기 때문에 <strong>Django</strong>(<strong>장고</strong>)나 <strong>Flask</strong>(<strong>플라스크</strong>) 기반으로 구현된 <strong>WAS</strong>에 요청을 보낼 수 없다. <strong>WSGI</strong>는 그 사이에서 이를 중계해주는 역할이다.</p>
