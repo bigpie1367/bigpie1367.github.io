@@ -192,7 +192,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2024-01-05 12:42:10 / Modified: 15:43:39" itemprop="dateCreated datePublished" datetime="2024-01-05T12:42:10+09:00">2024-01-05</time>
+      <time title="Created: 2024-01-05 12:42:10 / Modified: 15:48:27" itemprop="dateCreated datePublished" datetime="2024-01-05T12:42:10+09:00">2024-01-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -245,7 +245,7 @@
 <p>이와 같은 구조로 구성할 경우 아래와 같은 장점을 얻을 수 있다.</p>
 <h3 id="1-WAS-서버-부하-방지"><a href="#1-WAS-서버-부하-방지" class="headerlink" title="1. WAS 서버 부하 방지"></a>1. WAS 서버 부하 방지</h3><p><strong>WAS</strong> 서버는 실제 비즈니스 로직 및 DB 조회를 담당하는데, 단순 정적 파일 또한 WAS에서 서빙할 경우 다른 작업으로 인해 불필요한 딜레이가 발생할 수 있다.</p>
 <h3 id="2-로직-분리를-통한-보안-강화"><a href="#2-로직-분리를-통한-보안-강화" class="headerlink" title="2. 로직 분리를 통한 보안 강화"></a>2. 로직 분리를 통한 보안 강화</h3><p>일반적인 사용자들은 <strong>Web Server</strong>에만 접근하고 <strong>WAS</strong>는 알 필요가 없다. 따라서 사용자들에게 노출되는 부분은 <strong>Web Server</strong>로 한정지어 불필요한 위험으로부터 분리하여 비즈니스 로직 등 중요 데이터들을 안전하게 지킬 수 있다.</p>
-<h3 id="3-다수의-AWS-서버-연결"><a href="#3-다수의-AWS-서버-연결" class="headerlink" title="3. 다수의 AWS 서버 연결"></a>3. 다수의 AWS 서버 연결</h3><p>동일한 서비스를 제공하는 복수의 <strong>WAS</strong> 서버를 연결하여 특정 서버에 가해지는 부하를 줄일 수 있다 (<strong>Load Balancing</strong>). 또한 특정 한 서버가 다운 되더라도 여분의 서버를 통해 안정적인 서비스를 제공할 수 있다 (<strong>Fail Over</strong>)</p>
+<h3 id="3-다수의-WAS-서버-연결"><a href="#3-다수의-WAS-서버-연결" class="headerlink" title="3. 다수의 WAS 서버 연결"></a>3. 다수의 WAS 서버 연결</h3><p>동일한 서비스를 제공하는 복수의 <strong>WAS</strong> 서버를 연결하여 특정 서버에 가해지는 부하를 줄일 수 있다 (<strong>Load Balancing</strong>). 또한 특정 한 서버가 다운 되더라도 여분의 서버를 통해 안정적인 서비스를 제공할 수 있다 (<strong>Fail Over</strong>)</p>
 <h3 id="4-여러-웹-어플리케이션과의-연결"><a href="#4-여러-웹-어플리케이션과의-연결" class="headerlink" title="4. 여러 웹 어플리케이션과의 연결"></a>4. 여러 웹 어플리케이션과의 연결</h3><p>서로 다른 기능을 담당하는 <strong>WAS</strong>를 연결하여 복수의 서비스를 제공할 수 있다</p>
 <p>&nbsp;<br>&nbsp;</p>
 <h2 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h2><p><strong>Nginx</strong>(<strong>엔진엑스</strong>)란 <strong>Web Server</strong>의 일종으로, 현재 가장 상용화 된 방식 중 하나이다. 과거엔 <strong>Apahce</strong>(<strong>아파치</strong>)를 활용하여 <strong>Web Server</strong>를 구현하였는데, <strong>Apache</strong>는 쓰레드 방식으로 하나의 요청당 하나의 쓰레드가 새로 생성되어 해당 요청을 처리하는 방식이다. 이러한 방식의 경우 쓰레드를 생성하고 또 요청을 처리하기까지 많은 오버헤드가 발생하게 되어 사용에 꺼려지고 있다.</p>
