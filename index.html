@@ -190,9 +190,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2024-01-05 12:42:10 / Modified: 15:48:27" itemprop="dateCreated datePublished" datetime="2024-01-05T12:42:10+09:00">2024-01-05</time>
+      <time title="Created: 2024-01-05 12:42:10" itemprop="dateCreated datePublished" datetime="2024-01-05T12:42:10+09:00">2024-01-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-01-08 15:34:48" itemprop="dateModified" datetime="2024-01-08T15:34:48+09:00">2024-01-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -253,12 +259,15 @@
 <p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/7a8a34ac-8c61-49af-ab95-fe9f0fef76a9"><center><em>출처 : <a target="_blank" rel="noopener" href="https://whatisthenext.tistory.com/123">https://whatisthenext.tistory.com/123</a></em></center></p>
 <p>&nbsp;</p>
 <p>두 Web Server간의 성능 차이를 비교해보면 아래 이미지와 같다.</p>
-<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/f91e3a66-deb9-461a-9194-5d542d10ff08"><center><em>출처 : <a target="_blank" rel="noopener" href="https://statuslist.app/nginx/variables/">https://statuslist.app/nginx/variables/</a></em></center></p>
+<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/f91e3a66-deb9-461a-9194-5d542d10ff08"></p>
+<center>Connection 수에 따른 메모리 사용량 비교</center>
+<center>*출처 : https://statuslist.app/nginx/variables/*</center>
+
 <p>&nbsp;</p>
-<p>Connection 수에 따른 메모리 사용량 비교</p>
-<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/b6eefe31-9a4f-4f4d-a7e6-8979291ff960"><center><em>출처 : <a target="_blank" rel="noopener" href="https://statuslist.app/nginx/variables/">https://statuslist.app/nginx/variables/</a></em></center></p>
-<p>&nbsp;</p>
-<p>동시 요청된 Connection 수에 따른 처리 속도 비교</p>
+<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/b6eefe31-9a4f-4f4d-a7e6-8979291ff960"></p>
+<center>동시 요청된 Connection 수에 따른 처리 속도 비교</center>
+<center>*출처 : https://statuslist.app/nginx/variables/*</center>
+
 <p>&nbsp;<br>&nbsp;</p>
 <h2 id="Nginx-to-WSGI"><a href="#Nginx-to-WSGI" class="headerlink" title="Nginx to WSGI"></a>Nginx to WSGI</h2><p><strong>WSGI</strong>(<strong>위스키</strong>)는 <strong>Web Server Gateway Interface</strong>의 약자로, <strong>Web Server</strong>와 <strong>Python</strong> 기반의 WAS를 연결해주기 위한 통신 규약이다. 일반적인 <strong>Apache</strong>, <strong>Nginx와</strong> 같은 <strong>Web Server</strong>는 <strong>Python</strong>을 모르기 때문에 <strong>Django</strong>(<strong>장고</strong>)나 <strong>Flask</strong>(<strong>플라스크</strong>) 기반으로 구현된 <strong>WAS</strong>에 요청을 보낼 수 없다. <strong>WSGI</strong>는 그 사이에서 이를 중계해주는 역할이다.</p>
 <p>가장 일반적으로 <strong>Django</strong>는 <strong>Gunicorn</strong>(<strong>지유니콘</strong>)을 사용한다. 다만 <strong>Django</strong>를 경험해본 사람들은 <strong>Gunicorn</strong>을 사용하지 않고도 <strong>Django</strong> 기반 백엔드 서버에서 <strong>HTTP</strong> 통신을 정상적으로 이루었을 것이다. 이는 <code>python manage.py runserver</code> 명령어를 통해 <strong>WAS</strong>를 실행할 경우 기본적으로 <strong>Django</strong> 내장 <strong>WSGI</strong> 서버를 통해 사용자의 <strong>HTTP</strong> 요청을 처리하기 때문이다. 그럼에도 불구하고 장고 내장 <strong>WSGI</strong> 서버가 아닌 <strong>Guicorn</strong>이란 별도의 <strong>WSGI</strong> 서버를 통해 요청을 처리하는 이유는 아래와 같다.</p>
