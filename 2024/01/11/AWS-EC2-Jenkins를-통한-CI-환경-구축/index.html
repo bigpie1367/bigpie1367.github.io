@@ -20,25 +20,54 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"bigpie1367.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="지적이지 못한 개발자의 로그">
-<meta property="og:type" content="website">
-<meta property="og:title" content="no_intellectual.log">
-<meta property="og:url" content="https://bigpie1367.github.io/index.html">
+    <meta name="description" content="서론이전 Docker-compose 구성을 통한 각 서버별 Docker Container들을 구성하였는데, 진행하다 보니 CI 자동화도 알아보고 싶어 이에 대해 다루고자 한다. 본 글에서는 AWS EC2 인스턴스 내 Jenkins를 통해 CI 자동화에 대해 다루고자 한다. 현재 회사 특성상 CD 까지 진행하는데 어려움이 있을 듯 해 ‘CI&#x2F;CD’가">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS EC2 Jenkins를 통한 CI 환경 구축">
+<meta property="og:url" content="https://bigpie1367.github.io/2024/01/11/AWS-EC2-Jenkins%EB%A5%BC-%ED%86%B5%ED%95%9C-CI-%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95/index.html">
 <meta property="og:site_name" content="no_intellectual.log">
-<meta property="og:description" content="지적이지 못한 개발자의 로그">
+<meta property="og:description" content="서론이전 Docker-compose 구성을 통한 각 서버별 Docker Container들을 구성하였는데, 진행하다 보니 CI 자동화도 알아보고 싶어 이에 대해 다루고자 한다. 본 글에서는 AWS EC2 인스턴스 내 Jenkins를 통해 CI 자동화에 대해 다루고자 한다. 현재 회사 특성상 CD 까지 진행하는데 어려움이 있을 듯 해 ‘CI&#x2F;CD’가">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/bigpie1367/SWeat/assets/52846766/8fe67b37-def3-4fcc-9371-e0f53da6d6a2">
+<meta property="og:image" content="https://github.com/bigpie1367/SWeat/assets/52846766/c723d889-a8ca-487c-84a8-384e2723aaf8">
+<meta property="og:image" content="https://github.com/bigpie1367/SWeat/assets/52846766/6c03fc81-f9f6-4b21-a9db-20a525c05d9d">
+<meta property="og:image" content="https://github.com/bigpie1367/SWeat/assets/52846766/701fa2b8-0e05-40d4-9eb3-e50c4e99f01c">
+<meta property="og:image" content="https://github.com/bigpie1367/SWeat/assets/52846766/96e195b4-db8f-4f39-af61-af1d5fc51e6a">
+<meta property="og:image" content="https://github.com/bigpie1367/SWeat/assets/52846766/51b707fb-a909-4da1-a9bb-6f202b994da4">
+<meta property="og:image" content="https://github.com/bigpie1367/SWeat/assets/52846766/79bc30b3-c3e6-4003-9fbe-0a42c2575122">
+<meta property="og:image" content="https://github.com/bigpie1367/SWeat/assets/52846766/bc8bd084-0a53-4911-80a6-71f519ee3981">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25AB_9.09.25.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25AB_10.39.21.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25AB_10.45.05.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25AB_10.47.03.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25AB_10.47.09.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25AB_10.48.26.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25AB_10.54.08.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25AB_10.55.40.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25AB_10.55.47.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25AB_10.56.14.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25AB_11.19.23.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25AB_11.23.01.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_3.30.01.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_3.30.29.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_3.43.07.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_3.48.20.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_4.58.32.png">
+<meta property="og:image" content="https://bigpie1367.github.io/AWS%20EC2%20Jenkins%20CI%20%E1%84%80%E1%85%AE%E1%84%8E%E1%85%AE%E1%86%A8%20590ada56702b4397b8d9cb8a48225475/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-01-09_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_4.58.41.png">
+<meta property="article:published_time" content="2024-01-10T23:28:47.000Z">
+<meta property="article:modified_time" content="2024-01-10T23:41:12.636Z">
 <meta property="article:author" content="Suin Roh">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/bigpie1367/SWeat/assets/52846766/8fe67b37-def3-4fcc-9371-e0f53da6d6a2">
 
 
-<link rel="canonical" href="https://bigpie1367.github.io/">
+<link rel="canonical" href="https://bigpie1367.github.io/2024/01/11/AWS-EC2-Jenkins%EB%A5%BC-%ED%86%B5%ED%95%9C-CI-%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"en","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://bigpie1367.github.io/2024/01/11/AWS-EC2-Jenkins%EB%A5%BC-%ED%86%B5%ED%95%9C-CI-%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95/","path":"2024/01/11/AWS-EC2-Jenkins를-통한-CI-환경-구축/","title":"AWS EC2 Jenkins를 통한 CI 환경 구축"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>no_intellectual.log</title>
+<title>AWS EC2 Jenkins를 통한 CI 환경 구축 | no_intellectual.log</title>
   
 
 
@@ -71,7 +100,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">no_intellectual.log</h1>
+      <p class="site-title">no_intellectual.log</p>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -97,7 +126,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -110,6 +139,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%EC%84%9C%EB%A1%A0"><span class="nav-number">1.</span> <span class="nav-text">서론</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%EB%B3%B8%EB%A1%A0"><span class="nav-number">2.</span> <span class="nav-text">본론</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CI-CD-%EB%9E%80"><span class="nav-number">2.1.</span> <span class="nav-text">CI&#x2F;CD 란?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B5%AC%EC%84%B1"><span class="nav-number">2.2.</span> <span class="nav-text">프로젝트 구성</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AWS-EC2-%EC%9D%B8%EC%8A%A4%ED%84%B4%EC%8A%A4-%EC%83%9D%EC%84%B1"><span class="nav-number">2.3.</span> <span class="nav-text">AWS EC2 인스턴스 생성</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EC%8B%A0%EA%B7%9C-%EC%9D%B8%EC%8A%A4%ED%84%B4%EC%8A%A4-%EC%83%9D%EC%84%B1"><span class="nav-number">2.3.1.</span> <span class="nav-text">신규 인스턴스 생성</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Application-and-OS-Images"><span class="nav-number">2.3.2.</span> <span class="nav-text">Application and OS Images</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EC%9D%B8%EC%8A%A4%ED%84%B4%EC%8A%A4-%EC%9C%A0%ED%98%95"><span class="nav-number">2.3.3.</span> <span class="nav-text">인스턴스 유형</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%ED%82%A4-%ED%8E%98%EC%96%B4"><span class="nav-number">2.3.4.</span> <span class="nav-text">키 페어</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B5%AC%EC%84%B1"><span class="nav-number">2.3.5.</span> <span class="nav-text">네트워크 구성</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EC%9D%B8%EC%8A%A4%ED%84%B4%EC%8A%A4-%EC%83%9D%EC%84%B1-%EC%99%84%EB%A3%8C"><span class="nav-number">2.3.6.</span> <span class="nav-text">인스턴스 생성 완료</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EC%9D%B8%EC%8A%A4%ED%84%B4%EC%8A%A4-%EC%A0%91%EA%B7%BC"><span class="nav-number">2.3.7.</span> <span class="nav-text">인스턴스 접근</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jenkins-%EC%84%A4%EC%B9%98-%EC%84%A4%EC%A0%95"><span class="nav-number">2.4.</span> <span class="nav-text">Jenkins 설치 &amp; 설정</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Github-Webhook-%EC%97%B0%EA%B2%B0"><span class="nav-number">2.5.</span> <span class="nav-text">Github Webhook 연결</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%EC%B0%B8%EA%B3%A0-%EB%AC%B8%ED%97%8C"><span class="nav-number">3.</span> <span class="nav-text">참고 문헌</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -152,16 +182,17 @@
 
     </div>
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="https://bigpie1367.github.io/2024/01/11/AWS-EC2-Jenkins%EB%A5%BC-%ED%86%B5%ED%95%9C-CI-%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -175,13 +206,13 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | no_intellectual.log">
+      <meta itemprop="name" content="AWS EC2 Jenkins를 통한 CI 환경 구축 | no_intellectual.log">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/01/11/AWS-EC2-Jenkins%EB%A5%BC-%ED%86%B5%ED%95%9C-CI-%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95/" class="post-title-link" itemprop="url">AWS EC2 Jenkins를 통한 CI 환경 구축</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          AWS EC2 Jenkins를 통한 CI 환경 구축
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -227,8 +258,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="서론"><a href="#서론" class="headerlink" title="서론"></a>서론</h1><p>이전 <strong>Docker-compose</strong> 구성을 통한 각 서버별 <strong>Docker Container</strong>들을 구성하였는데, 진행하다 보니 <strong>CI</strong> 자동화도 알아보고 싶어 이에 대해 다루고자 한다. 본 글에서는 <strong>AWS EC2</strong> 인스턴스 내 <strong>Jenkins</strong>를 통해 <strong>CI</strong> 자동화에 대해 다루고자 한다. 현재 회사 특성상 <strong>CD</strong> 까지 진행하는데 어려움이 있을 듯 해 ‘<strong>CI&#x2F;CD</strong>’가 아닌, <strong>CI</strong>만을 다루고자 한다.</p>
+    <div class="post-body" itemprop="articleBody"><h1 id="서론"><a href="#서론" class="headerlink" title="서론"></a>서론</h1><p>이전 <strong>Docker-compose</strong> 구성을 통한 각 서버별 <strong>Docker Container</strong>들을 구성하였는데, 진행하다 보니 <strong>CI</strong> 자동화도 알아보고 싶어 이에 대해 다루고자 한다. 본 글에서는 <strong>AWS EC2</strong> 인스턴스 내 <strong>Jenkins</strong>를 통해 <strong>CI</strong> 자동화에 대해 다루고자 한다. 현재 회사 특성상 <strong>CD</strong> 까지 진행하는데 어려움이 있을 듯 해 ‘<strong>CI&#x2F;CD</strong>’가 아닌, <strong>CI</strong>만을 다루고자 한다.</p>
 <p>&nbsp;<br>&nbsp;</p>
 <h1 id="본론"><a href="#본론" class="headerlink" title="본론"></a>본론</h1><h2 id="CI-CD-란"><a href="#CI-CD-란" class="headerlink" title="CI&#x2F;CD 란?"></a>CI&#x2F;CD 란?</h2><p><strong>CI</strong> &#x3D; 지속적인 통합(Continuous Integration)을 의미하는 단어로 ‘빌드와 테스트’를 자동화한 것이다.</p>
 <p><strong>CD</strong> &#x3D; 지속적인 전달(Continuous Delivery) or 지속적인 배포(Continuous Deployment)를 의미하는 단어로 CI가 완료된 이후 사용자에게 전달하는 배포 과정을 자동화한 것이다.</p>
@@ -341,7 +371,6 @@
 <p><a href="%5Bhttps://www.dongyeon1201.kr/9026133b-31be-4b58-bcc7-49abbe893044%5D(https://www.dongyeon1201.kr/9026133b-31be-4b58-bcc7-49abbe893044)">Jenkins를 활용한 DevOps 환경 구축</a></p>
 <p><a href="%5Bhttps://www.lechuck.blog/post/AWS-EC2%EC%97%90-Docker-Compose-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0%5D(https://www.lechuck.blog/post/AWS-EC2%EC%97%90-Docker-Compose-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0)">AWS EC2에 Docker-Compose 구축하기</a></p>
 
-      
     </div>
 
     
@@ -349,207 +378,18 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
 
+        
 
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://bigpie1367.github.io/2024/01/05/Web-Server%EB%B6%80%ED%84%B0-Nginx%EA%B9%8C%EC%A7%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Suin Roh">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="no_intellectual.log">
-      <meta itemprop="description" content="지적이지 못한 개발자의 로그">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | no_intellectual.log">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/01/05/Web-Server%EB%B6%80%ED%84%B0-Nginx%EA%B9%8C%EC%A7%80/" class="post-title-link" itemprop="url">Web Server부터 Nginx까지</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-01-05 12:42:10" itemprop="dateCreated datePublished" datetime="2024-01-05T12:42:10+09:00">2024-01-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-01-08 15:41:16" itemprop="dateModified" datetime="2024-01-08T15:41:16+09:00">2024-01-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Backend/" itemprop="url" rel="index"><span itemprop="name">Backend</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2024/01/05/Web-Server%EB%B6%80%ED%84%B0-Nginx%EA%B9%8C%EC%A7%80/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2024/01/05/Web-Server부터-Nginx까지/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>&nbsp;</p>
-<h1 id="서론"><a href="#서론" class="headerlink" title="서론"></a>서론</h1><p><strong>Nginx</strong>(<strong>엔진엑스</strong>) 에 대해 찾아보는 와중 기존 내가 알고있던 <strong>웹 서버</strong>(<strong>Web Server</strong>)에 대한 개념이 상충하는 것이 있어 이를 정리하고자 한다. 본 글에서는 <strong>Web Server</strong>와 <strong>WAS</strong>의 개념 비교부터 시작하여 가장 보편적으로 사용되는 <strong>Web Server</strong> 엔진 및 실제 사용될 수 있는 프로젝트 구성을 <strong>Docker-compose</strong>를 통해 구성해보고자 한다.</p>
-<p>&nbsp;<br>&nbsp;</p>
-<h1 id="본론"><a href="#본론" class="headerlink" title="본론"></a>본론</h1><h2 id="Web-Server"><a href="#Web-Server" class="headerlink" title="Web Server"></a>Web Server</h2><p>위키백과에 정의된 웹 서버에 대한 정의는 다음과 같다</p>
-<blockquote>
-<p><strong><a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9B%94%EB%93%9C_%EC%99%80%EC%9D%B4%EB%93%9C_%EC%9B%B9">웹</a> <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%84%9C%EB%B2%84">서버</a></strong>(Web server)는 다음의 두 가지 뜻 가운데 하나이다.</p>
-<ol>
-<li>웹 서버: <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9B%B9_%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80">웹 브라우저</a>와 같은 클라이언트로부터 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/HTTP">HTTP</a> 요청을 받아들이고, <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/HTML">HTML</a> 문서와 같은 웹 페이지를 반환하는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%BB%B4%ED%93%A8%ED%84%B0_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8">컴퓨터 프로그램</a></li>
-<li>웹 서버 (하드웨어): 위에 언급한 기능을 제공하는 컴퓨터 프로그램을 실행하는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%BB%B4%ED%93%A8%ED%84%B0">컴퓨터</a></li>
-</ol>
-<p><strong>웹 서버</strong>(web server)는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/HTTP">HTTP</a> 또는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/HTTPS">HTTPS</a>를 통해 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9B%B9_%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80">웹 브라우저</a>에서 요청하는 [HTML 문서나 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8">오브젝트</a>(<a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9D%B4%EB%AF%B8%EC%A7%80_%ED%8C%8C%EC%9D%BC">이미지 파일</a> 등)을 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%A0%84%EC%86%A1_(%EC%BB%B4%ED%93%A8%ED%8C%85)">전송</a>해주는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%84%9C%EB%B9%84%EC%8A%A4%ED%98%95_%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4">서비스 프로그램</a>을 말한다. 웹 서버 소프트웨어를 구동하는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%ED%95%98%EB%93%9C%EC%9B%A8%EC%96%B4">하드웨어</a>도 웹 서버라고 해서 혼동하는 경우가 간혹 있다.</p>
-<p>출처 : <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9B%B9_%EC%84%9C%EB%B2%84">https://ko.wikipedia.org/wiki/웹_서버</a></p>
-</blockquote>
-<p>위에 정의된 바와 같이 <strong>웹 서버</strong>란 <strong>HTTP, HTTPS</strong> 통신 프로토콜을 통해 사용자가 요청하는 <strong>HTML 문서</strong>나 <strong>오브젝트</strong>, 즉 <strong>정적인 파일</strong>들을 전달해주는 서비스 프로그램을 말한다. 다만 이러한 정적인 페이지들의 경우 과거에는 충분하였을 지 모르나 기술이 발달한 요즘 시대에는 부족한 것이 사실이다. 이러한 태생적인 한계를 극복하기 위한 것이 <strong>WAS(Web Application Server)</strong> 이다.</p>
-<p>&nbsp;<br>&nbsp;</p>
-<h2 id="WAS-Web-Application-Server"><a href="#WAS-Web-Application-Server" class="headerlink" title="WAS (Web Application Server)"></a>WAS (Web Application Server)</h2><p>마찬가지로 위키백과에 정의된 웹 어플리케이션 서버에 대한 정의는 다음과 같다.</p>
-<blockquote>
-<p><strong>웹 애플리케이션 서버</strong>(Web Application Server, 약자 <strong>WAS</strong>)는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9B%B9_%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98">웹 애플리케이션</a>과 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%84%9C%EB%B2%84">서버</a> 환경을 만들어 동작시키는 기능을 제공하는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4_%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC">소프트웨어 프레임워크</a>이다.<a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EC%9B%B9_%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98_%EC%84%9C%EB%B2%84#cite_note-1">[1]</a> 인터넷 상에서 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/HTTP">HTTP</a>를 통해 사용자 컴퓨터나 장치에 애플리케이션을 수행해 주는 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EB%AF%B8%EB%93%A4%EC%9B%A8%EC%96%B4">미들웨어</a>(소프트웨어 엔진)로 볼 수 있다. 웹 애플리케이션 서버는 동적 서버 콘텐츠를 수행하는 것으로 일반적인 웹 서버와 구별이 되며, 주로 데이터베이스 서버와 같이 수행이 된다. 한국에서는 일반적으로 “WAS” 또는 “WAS S&#x2F;W”로 통칭하고 있으며 공공기관에서는 “웹 응용 서버”로 사용되고, 영어권에서는 “Application Server” (약자 AS)로 불린다.</p>
-<p>출처 : <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Application_server">https://en.wikipedia.org/wiki/Application_server</a></p>
-</blockquote>
-<p>즉 <strong>웹 애플리케이션 서버</strong>(이후 WAS)는 우리가 통상적으로 인식하고 있는 웹 서버의 개념과 동일하다고 보면 된다. 사용자의 요청이 단순 정적인 파일 서빙으로 해결이 안 될 경우, 즉 사용자마다 서로 다른 페이지를 보여줘야 허거나 특정 비지니스 로직, 혹은 DB 와의 상호작용이 필요한 경우가 이에 해당된다.</p>
-<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/fec035ee-2eab-4401-80a0-81dfeb3968c2"><center>출처 : <a target="_blank" rel="noopener" href="https://dkswnkk.tistory.com/503?category=551275">https://dkswnkk.tistory.com/503?category=551275</a></center></p>
-<p>&nbsp;</p>
-<p><strong>WAS</strong>는 위 이미지와 같이 <strong>Web Server</strong>와 <strong>Web Container</strong>로 이루어져 있다. 다만 통상적인 개발 과정에서는 <strong>WAS</strong>와 <strong>Web Server</strong>를 분리하여 개발하는 경우가 잦다. 아래와 같은 구조를 의미한다.</p>
-<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/178542e1-4112-48da-9b9b-e515acf2fafe"><center>출처 : <a target="_blank" rel="noopener" href="https://dkswnkk.tistory.com/503?category=551275">https://dkswnkk.tistory.com/503?category=551275</a></center></p>
-<p>&nbsp;</p>
-<p>즉 1차적으로 사용자가 요청한 내용을 <strong>Web Server</strong>에서 처리한다. 해당 요청이 단순 정적인 파일 서빙으로 해결될 수 있는 문제의 경우 <strong>Web Server</strong>가 자체적으로 해당 파일을 서빙하여 해결한다. 다만 <strong>비즈니스 로직</strong>이나 <strong>DB 조회</strong>가 필요한 <strong>동적인 파일</strong>의 경우 <strong>WAS</strong>에 요청하여 해당 요청을 처리한다.</p>
-<p>&nbsp;</p>
-<p>이와 같은 구조로 구성할 경우 아래와 같은 장점을 얻을 수 있다.</p>
-<h3 id="1-WAS-서버-부하-방지"><a href="#1-WAS-서버-부하-방지" class="headerlink" title="1. WAS 서버 부하 방지"></a>1. WAS 서버 부하 방지</h3><p><strong>WAS</strong> 서버는 실제 비즈니스 로직 및 DB 조회를 담당하는데, 단순 정적 파일 또한 WAS에서 서빙할 경우 다른 작업으로 인해 불필요한 딜레이가 발생할 수 있다.</p>
-<h3 id="2-로직-분리를-통한-보안-강화"><a href="#2-로직-분리를-통한-보안-강화" class="headerlink" title="2. 로직 분리를 통한 보안 강화"></a>2. 로직 분리를 통한 보안 강화</h3><p>일반적인 사용자들은 <strong>Web Server</strong>에만 접근하고 <strong>WAS</strong>는 알 필요가 없다. 따라서 사용자들에게 노출되는 부분은 <strong>Web Server</strong>로 한정지어 불필요한 위험으로부터 분리하여 비즈니스 로직 등 중요 데이터들을 안전하게 지킬 수 있다.</p>
-<h3 id="3-다수의-WAS-서버-연결"><a href="#3-다수의-WAS-서버-연결" class="headerlink" title="3. 다수의 WAS 서버 연결"></a>3. 다수의 WAS 서버 연결</h3><p>동일한 서비스를 제공하는 복수의 <strong>WAS</strong> 서버를 연결하여 특정 서버에 가해지는 부하를 줄일 수 있다 (<strong>Load Balancing</strong>). 또한 특정 한 서버가 다운 되더라도 여분의 서버를 통해 안정적인 서비스를 제공할 수 있다 (<strong>Fail Over</strong>)</p>
-<h3 id="4-여러-웹-어플리케이션과의-연결"><a href="#4-여러-웹-어플리케이션과의-연결" class="headerlink" title="4. 여러 웹 어플리케이션과의 연결"></a>4. 여러 웹 어플리케이션과의 연결</h3><p>서로 다른 기능을 담당하는 <strong>WAS</strong>를 연결하여 복수의 서비스를 제공할 수 있다</p>
-<p>&nbsp;<br>&nbsp;</p>
-<h2 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h2><p><strong>Nginx</strong>(<strong>엔진엑스</strong>)란 <strong>Web Server</strong>의 일종으로, 현재 가장 상용화 된 방식 중 하나이다. 과거엔 <strong>Apahce</strong>(<strong>아파치</strong>)를 활용하여 <strong>Web Server</strong>를 구현하였는데, <strong>Apache</strong>는 쓰레드 방식으로 하나의 요청당 하나의 쓰레드가 새로 생성되어 해당 요청을 처리하는 방식이다. 이러한 방식의 경우 쓰레드를 생성하고 또 요청을 처리하기까지 많은 오버헤드가 발생하게 되어 사용에 꺼려지고 있다.</p>
-<p><strong>Nginx</strong>는 이와 대조적으로 사전 정의된 설정값(*.conf)에 따라 <strong>Worker Process</strong>가 생성되고, 이 <strong>Worker Process</strong>가 일정 시간(<strong>keep alive</strong>)동안 유지되어 사용자의 요청(<strong>Connection</strong>)을 처리하는 방식이다. 이렇게 보면 <strong>Apache</strong>와 큰 차이가 없어 보이지만 가장 큰 핵심은 사용자의 요청을 비동기적으로 처리한다는 것이다. 사용자의 요청은 <strong>Queue</strong>에 대기상태로 쌓이고 유휴상태인 <strong>Worker Process</strong>가 해당 작업을 맡아 처리하는 방식이다. 이를 <strong>Event-Driven</strong> 방식이라 한다.</p>
-<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/7a8a34ac-8c61-49af-ab95-fe9f0fef76a9"><center>출처 : <a target="_blank" rel="noopener" href="https://whatisthenext.tistory.com/123">https://whatisthenext.tistory.com/123</a></center></p>
-<p>&nbsp;</p>
-<p>두 Web Server간의 성능 차이를 비교해보면 아래 이미지와 같다.</p>
-<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/f91e3a66-deb9-461a-9194-5d542d10ff08"></p>
-<center>Connection 수에 따른 메모리 사용량 비교</center>
-<center>출처 : https://statuslist.app/nginx/variables/</center>
-
-<p>&nbsp;</p>
-<p><img src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/b6eefe31-9a4f-4f4d-a7e6-8979291ff960"></p>
-<center>동시 요청된 Connection 수에 따른 처리 속도 비교</center>
-<center>출처 : https://statuslist.app/nginx/variables/</center>
-
-<p>&nbsp;<br>&nbsp;</p>
-<h2 id="Nginx-to-WSGI"><a href="#Nginx-to-WSGI" class="headerlink" title="Nginx to WSGI"></a>Nginx to WSGI</h2><p><strong>WSGI</strong>(<strong>위스키</strong>)는 <strong>Web Server Gateway Interface</strong>의 약자로, <strong>Web Server</strong>와 <strong>Python</strong> 기반의 WAS를 연결해주기 위한 통신 규약이다. 일반적인 <strong>Apache</strong>, <strong>Nginx와</strong> 같은 <strong>Web Server</strong>는 <strong>Python</strong>을 모르기 때문에 <strong>Django</strong>(<strong>장고</strong>)나 <strong>Flask</strong>(<strong>플라스크</strong>) 기반으로 구현된 <strong>WAS</strong>에 요청을 보낼 수 없다. <strong>WSGI</strong>는 그 사이에서 이를 중계해주는 역할이다.</p>
-<p>가장 일반적으로 <strong>Django</strong>는 <strong>Gunicorn</strong>(<strong>지유니콘</strong>)을 사용한다. 다만 <strong>Django</strong>를 경험해본 사람들은 <strong>Gunicorn</strong>을 사용하지 않고도 <strong>Django</strong> 기반 백엔드 서버에서 <strong>HTTP</strong> 통신을 정상적으로 이루었을 것이다. 이는 <code>python manage.py runserver</code> 명령어를 통해 <strong>WAS</strong>를 실행할 경우 기본적으로 <strong>Django</strong> 내장 <strong>WSGI</strong> 서버를 통해 사용자의 <strong>HTTP</strong> 요청을 처리하기 때문이다. 그럼에도 불구하고 장고 내장 <strong>WSGI</strong> 서버가 아닌 <strong>Guicorn</strong>이란 별도의 <strong>WSGI</strong> 서버를 통해 요청을 처리하는 이유는 아래와 같다.</p>
-<blockquote>
-<p>Gunicorn has many features that Django’s built-in server is lacking:</p>
-<ul>
-<li>gunicorn can spawn multiple worker processes to parallelize incoming requests to multiple CPU cores</li>
-<li>gunicorn has better logging</li>
-<li>gunicorn is generally optimized for speed</li>
-<li>gunicorn can be configured to fine grades depending on your setup</li>
-<li>gunicorn is actively designed and maintained with security in mind</li>
-</ul>
-<p>출처 : <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/35657332/django-difference-between-using-server-through-manage-py-and-other-servers-like">https://stackoverflow.com/questions/35657332/django-difference-between-using-server-through-manage-py-and-other-servers-like</a></p>
-</blockquote>
-<p>&nbsp;<br>&nbsp;</p>
-<h1 id="실습"><a href="#실습" class="headerlink" title="실습"></a>실습</h1><p>실습은 <strong>Docker-compose</strong>를 통해 <strong>Postgres</strong>, <strong>Django</strong>, <strong>Nginx</strong> 각각에 해당하는 <strong>Docker Container</strong>를 만들어 구성된 환경에서 진행되었다. 본 실습은 <strong>Docker-compose</strong>를 통해 각 <strong>Container</strong>간의 연결에 초점을 맞춘 관계로 <strong>Django</strong> 프로젝트 설정에 관한 내용은 생략하도록 하겠다. <code>local_settings.py</code>를 통해 <strong>DB</strong> 관련 설정을 해주었단 것만 주의하면 큰 문제는 없을 것이다. 프로젝트 디렉토리 구조는 아래와 같다.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># &gt; tree</span></span><br><span class="line"></span><br><span class="line">.</span><br><span class="line">├── bin</span><br><span class="line">│   ├── compose</span><br><span class="line">│   │   ├── django</span><br><span class="line">│   │   │   └── Dockerfile</span><br><span class="line">│   │   └── nginx</span><br><span class="line">│   │       └── nginx.conf</span><br><span class="line">│   ├── docker-compose.yml</span><br><span class="line">│   ├── requirements.txt</span><br><span class="line">│   └── restart_docker.sh</span><br><span class="line">└── practice</span><br><span class="line">    ├── manage.py</span><br><span class="line">    ├── practice</span><br><span class="line">    │   ├── __init__.py</span><br><span class="line">    │   ├── asgi.py</span><br><span class="line">    │   ├── local_settings.py</span><br><span class="line">    │   ├── settings.py</span><br><span class="line">    │   ├── urls.py</span><br><span class="line">    │   └── wsgi.py     <span class="comment"># Django 기본 WSGI 서버</span></span><br><span class="line">    └── practice_site</span><br><span class="line">        ├── __init__.py</span><br><span class="line">        ├── admin.py</span><br><span class="line">        ├── apps.py</span><br><span class="line">        ├── fixtures</span><br><span class="line">        │   └── initial_data.json</span><br><span class="line">        ├── migrations</span><br><span class="line">        │   ├── 0001_initial.py</span><br><span class="line">        │   └── __init__.py</span><br><span class="line">        ├── models.py</span><br><span class="line">        ├── tests.py</span><br><span class="line">        ├── urls.py</span><br><span class="line">        └── views.py</span><br></pre></td></tr></table></figure>
-
-<p><strong>Docker</strong> 컨테이너 구성을 위한 <strong>docker-compose.yml</strong> 파일은 아래와 같다.</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ./bin/compose/docker-compose.yml</span></span><br><span class="line"></span><br><span class="line">version: <span class="string">&#x27;3&#x27;</span></span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">  practice_database:    <span class="comment"># DB 서비스</span></span><br><span class="line">    container_name: practice_database</span><br><span class="line">    image: postgres:<span class="number">15</span></span><br><span class="line">    environment:</span><br><span class="line">      - POSTGRES_DB=practice</span><br><span class="line">      - POSTGRES_USER=practice</span><br><span class="line">      - POSTGRES_PASSWORD=practice</span><br><span class="line"></span><br><span class="line">  practice_web:    <span class="comment"># Django 서비스</span></span><br><span class="line">    container_name: practice_web</span><br><span class="line">    build:</span><br><span class="line">      context: .</span><br><span class="line">      dockerfile: ./compose/django/Dockerfile    <span class="comment"># 별도의 Dokcerfile을 통해 빌드</span></span><br><span class="line">    volumes:</span><br><span class="line">      - ..:/app    <span class="comment"># docker-compose 기준 상대참조하여 /app 디렉토리 내부로 마운트</span></span><br><span class="line">    working_dir: /app/practice</span><br><span class="line">    command: &gt;</span><br><span class="line">      sh -c <span class="string">&quot;</span></span><br><span class="line"><span class="string">        echo yes | python manage.py collectstatic &amp;&amp;    # static 파일을 빌드하기 위한 명령어</span></span><br><span class="line"><span class="string">        wait-for-it.sh practice_database:5432 &amp;&amp;    # DB 설정 완료까지 대기</span></span><br><span class="line"><span class="string">        python manage.py makemigrations &amp;&amp;</span></span><br><span class="line"><span class="string">        python manage.py migrate &amp;&amp;</span></span><br><span class="line"><span class="string">        python manage.py loaddata initial_data.json &amp;&amp;</span></span><br><span class="line"><span class="string">        gunicorn sweat.wsgi:application --workers=20 --timeout=300 --bind 0.0.0.0:8000</span></span><br><span class="line"><span class="string">      &quot;</span></span><br><span class="line">    depends_on:</span><br><span class="line">      - practice_database</span><br><span class="line"></span><br><span class="line">  practice_nginx:    <span class="comment"># Nginx 서비스</span></span><br><span class="line">    container_name: practice_nginx</span><br><span class="line">    image: nginx:latest</span><br><span class="line">    ports:</span><br><span class="line">      - <span class="string">&quot;80:80&quot;</span></span><br><span class="line">    volumes:</span><br><span class="line">      - ../practice/static:/static    <span class="comment"># collectstatic 명령어를 통해 빌드된 파일을 마운트</span></span><br><span class="line">      - ./compose/nginx:/etc/nginx/conf.d    <span class="comment"># conf 설정 파일 마운트</span></span><br><span class="line">    depends_on:</span><br><span class="line">      - practice_web</span><br></pre></td></tr></table></figure>
-
-<p><strong>Docker-compose</strong> 구성에 사용된 <strong>Dockerfile</strong> 및 <strong>nginx.conf</strong>는 아래와 같다.</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .bin/compose/django/Dockerfile</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> python:<span class="number">3.10</span>.<span class="number">6</span></span><br><span class="line"><span class="keyword">ENV</span> PYTHONUNBUFFERED <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get update -y</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># wait-for-it 스크립트를 통해 데이터베이스 설정 완료를 보장</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> wget -O /usr/local/bin/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">chmod</span> +x /usr/local/bin/wait-for-it.sh</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 디렉토리 설정 및 필수 패키지 설치</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> requirements.txt /app/</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> pip install --upgrade pip \</span></span><br><span class="line"><span class="language-bash">    &amp;&amp; pip install -r requirements.txt</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ./bin/compose/nginx/nginx.conf</span></span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen <span class="number">80</span>;</span><br><span class="line">    server_name practice_web;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_http_version <span class="number">1.1</span>;</span><br><span class="line">        proxy_pass http://practice_web:<span class="number">8000</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location /static/ &#123;</span><br><span class="line">        alias /static/;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>Docker</strong> 재실행을 위한 스크립트 <strong>restart_docker.sh</strong>는 다음과 같다</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ./bin/compose/restart_docker.sh</span></span><br><span class="line"></span><br><span class="line">docker-compose -p practice down</span><br><span class="line">docker-compose -p practice up -d</span><br></pre></td></tr></table></figure>
-
-<p>해당 스크립트를 통해 <strong>Docker</strong>를 재실행해보면 아래와 같은 결과를 <strong>Docker-Desktop</strong>에서 확인할 수 있다.</p>
-<img width="1792" alt="image" src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/2f9cea91-6965-48b2-944e-949dd419bfb6">
-
-<p>&nbsp;<br>&nbsp;</p>
-<h1 id="참고-문헌"><a href="#참고-문헌" class="headerlink" title="참고 문헌"></a>참고 문헌</h1><p><a href="%5Bhttps://dkswnkk.tistory.com/503?category=551275%5D(https://dkswnkk.tistory.com/503?category=551275)">Web Server와 WAS의 차이</a></p>
-<p><a href="%5Bhttps://velog.io/@bluewind8791/WAS-vs-web-server%5D(https://velog.io/@bluewind8791/WAS-vs-web-server)">WAS vs 웹 서버</a></p>
-<p><a href="%5Bhttps://velog.io/@gillog/Web-Server%EC%99%80-Web-Application-Server%EC%9D%98-%EC%B0%A8%EC%9D%B4%5D(https://velog.io/@gillog/Web-Server%EC%99%80-Web-Application-Server%EC%9D%98-%EC%B0%A8%EC%9D%B4)">Web Server와 Web Application Server</a></p>
-<p><a href="%5Bhttps://velog.io/@leesomyoung/%EC%9B%B9-%EC%84%9C%EB%B2%84-vs-WAS%5D(https://velog.io/@leesomyoung/%EC%9B%B9-%EC%84%9C%EB%B2%84-vs-WAS)">웹 서버 vs WAS</a></p>
-<p><a href="%5Bhttps://yozm.wishket.com/magazine/detail/1780/%5D(https://yozm.wishket.com/magazine/detail/1780/)">웹서버와 WAS(Web Application Server)</a></p>
-<p><a href="%5Bhttps://help.dreamhost.com/hc/en-us/articles/215945987-Web-server-performance-comparison%5D(https://help.dreamhost.com/hc/en-us/articles/215945987-Web-server-performance-comparison)">Web server performance comparison</a></p>
-<p><a href="%5Bhttps://wikidocs.net/75556%5D(https://wikidocs.net/75556)">WSGI 서버</a></p>
-<p><a href="%5Bhttps://sgc109.github.io/2020/08/15/python-wsgi/%5D(https://sgc109.github.io/2020/08/15/python-wsgi/)">WSGI란?</a></p>
-<p><a href="%5Bhttps://ssdragon.tistory.com/60%5D(https://ssdragon.tistory.com/60)">Nginx란?</a></p>
-<p><a href="%5Bhttps://dkswnkk.tistory.com/513%5D(https://dkswnkk.tistory.com/513)">Nginx란 무엇인가?</a></p>
-<p><a href="%5Bhttps://whatisthenext.tistory.com/123%5D(https://whatisthenext.tistory.com/123)">Nginx 이해하기 및 기본 환경 설정 세팅하기</a></p>
-<p><a href="%5Bhttps://phsun102.tistory.com/45%5D(https://phsun102.tistory.com/45)">Nginx 설치 및 nginx.conf, default.conf 이해하기</a></p>
-<p><a href="%5Bhttps://wikidocs.net/6601#static_root%5D(https://wikidocs.net/6601#static_root)">Nginix, Gunicorn 배포</a></p>
-<p><a href="%5Bhttps://velog.io/@devkwon/Django-nginx-%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0%5D(https://velog.io/@devkwon/Django-nginx-%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0)">Django Nginx 연결하기</a></p>
-<p><a href="%5Bhttps://ssungkang.tistory.com/entry/Django-%EC%9B%B9%EC%84%9C%EB%B2%84-Nginx-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0%5D(https://ssungkang.tistory.com/entry/Django-%EC%9B%B9%EC%84%9C%EB%B2%84-Nginx-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)">Django 웹서버, Nginx 사용하기</a></p>
-<p><a href="%5Bhttps://leffept.tistory.com/331%5D(https://leffept.tistory.com/331)">Docker-compose로 Django 환경 구축하기</a></p>
-<p><a href="%5Bhttps://americanoisice.tistory.com/226%5D(https://americanoisice.tistory.com/226)">Docker-compose로 Django, Nginx, Gunicorn 연결후 AWS 배포하기</a></p>
-<p><a href="%5Bhttps://velog.io/@masterkorea01/Docker-Nginx-gunicorn-django%5D(https://velog.io/@masterkorea01/Docker-Nginx-gunicorn-django)">Docker + Nginx + gunicorn + django</a></p>
-<p><a href="%5Bhttps://stackoverflow.com/questions/35657332/django-difference-between-using-server-through-manage-py-and-other-servers-like%5D(https://stackoverflow.com/questions/35657332/django-difference-between-using-server-through-manage-py-and-other-servers-like)">Django: Difference between using server through manage.py and other servers like gunicorn etc. Which is better?</a></p>
-<p><a href="%5Bhttps://statuslist.app/nginx/variables/%5D(https://statuslist.app/nginx/variables/)">How to use NGINX variables + Reference List</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/01/05/Web-Server%EB%B6%80%ED%84%B0-Nginx%EA%B9%8C%EC%A7%80/" rel="prev" title="Web Server부터 Nginx까지">
+                  <i class="fa fa-angle-left"></i> Web Server부터 Nginx까지
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
     </footer>
   </article>
 </div>
@@ -558,6 +398,12 @@
 
 
 
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
 </div>
   </main>
 
