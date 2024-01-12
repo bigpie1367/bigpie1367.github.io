@@ -10,6 +10,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
   <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="qsiG8EHxQtPY2_rjZ_90PC1vaHxeuKJGwvcK7wKVkPU">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -18,7 +19,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"bigpie1367.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"bigpie1367.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.19.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="서론이전 Docker-compose 구성을 통한 각 서버별 Docker Container들을 구성하였는데, 진행하다 보니 CI 자동화도 알아보고 싶어 이에 대해 다루고자 한다. 본 글에서는 AWS EC2 인스턴스 내 Jenkins를 통해 CI 자동화에 대해 다루고자 한다. 현재 회사 특성상 CD 까지 진행하는데 어려움이 있을 듯 해 ‘CI&#x2F;CD’가">
 <meta property="og:type" content="article">
@@ -54,7 +55,7 @@
 <meta property="og:image" content="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/bd5a1094-8f0b-4986-bb8e-4cac1c4b6561">
 <meta property="og:image" content="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/4905fe87-942c-4227-8ab8-c3566cf7708a">
 <meta property="article:published_time" content="2024-01-10T23:28:47.000Z">
-<meta property="article:modified_time" content="2024-01-12T00:26:13.574Z">
+<meta property="article:modified_time" content="2024-01-12T00:36:20.130Z">
 <meta property="article:author" content="Suin Roh">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/a15be20e-6b0f-44f2-98a0-41f34efc4ff3">
@@ -80,6 +81,7 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
+<link rel="alternate" href="/rss2.xml" title="no_intellectual.log" type="application/rss+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -165,10 +167,10 @@
 </div>
   <div class="links-of-author animated">
       <span class="links-of-author-item">
-        <a href="https://github.com/bigpie1367" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bigpie1367" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JpZ3BpZTEzNjc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bigpie1367"><i class="fab fa-github fa-fw"></i>GitHub</span>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:bigpie1367@gmail.com" title="E-Mail → mailto:bigpie1367@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+        <span class="exturl" data-url="bWFpbHRvOmJpZ3BpZTEzNjdAZ21haWwuY29t" title="E-Mail → mailto:bigpie1367@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
       </span>
   </div>
 
@@ -229,7 +231,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-01-12 09:26:13" itemprop="dateModified" datetime="2024-01-12T09:26:13+09:00">2024-01-12</time>
+      <time title="Modified: 2024-01-12 09:36:20" itemprop="dateModified" datetime="2024-01-12T09:36:20+09:00">2024-01-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -279,7 +281,7 @@
 <p>&nbsp;<br>&nbsp;</p>
 <h2 id="AWS-EC2-인스턴스-생성"><a href="#AWS-EC2-인스턴스-생성" class="headerlink" title="AWS EC2 인스턴스 생성"></a>AWS EC2 인스턴스 생성</h2><p>EC2에 대해 보다 자세히 다룬 글들이 존재하기에 참조할만한 링크만 추가한 뒤 본 글에서는 EC2 인스턴스를 통해 자동화하는 과정에 대해 집중적으로 다루고자 한다.</p>
 <blockquote>
-<p>Amazon EC2란 무엇인가요?<br><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/concepts.html">https://docs.aws.amazon.com/ko_kr&#x2F;AWSEC2&#x2F;latest&#x2F;UserGuide&#x2F;concepts.html</a></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmF3cy5hbWF6b24uY29tL2tvX2tyL0FXU0VDMi9sYXRlc3QvVXNlckd1aWRlL2NvbmNlcHRzLmh0bWw=">Amazon EC2란 무엇인가요?<i class="fa fa-external-link-alt"></i></span></p>
 </blockquote>
 <p>기존 활용하던 인스턴스가 아닌 새로 인스턴스를 생성하여 설명하도록 하겠다. 추가로 본 글에서는 ‘프리 티어’를 기준으로 설명하므로 이를 인지하고 살펴볼 필요가 있다.</p>
 <p>&nbsp;</p>
@@ -479,7 +481,7 @@
     </span>
     <span class="author" itemprop="copyrightHolder">Suin Roh</span>
   </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  <div class="powered-by">Powered by <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span>
   </div>
 
     </div>
@@ -497,7 +499,7 @@
     <span>0%</span>
   </div>
 
-  <a href="https://github.com/bigpie1367" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2JpZ3BpZTEzNjc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
 
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
