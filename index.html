@@ -200,7 +200,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-01-12 09:56:29" itemprop="dateModified" datetime="2024-01-12T09:56:29+09:00">2024-01-12</time>
+      <time title="Modified: 2024-01-12 10:24:59" itemprop="dateModified" datetime="2024-01-12T10:24:59+09:00">2024-01-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -236,7 +236,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="서론"><a href="#서론" class="headerlink" title="서론"></a>서론</h1><p>이전 <strong>Docker-compose</strong> 구성을 통한 각 서버별 <strong>Docker Container</strong>들을 구성하였는데, 진행하다 보니 <strong>CI</strong> 자동화도 알아보고 싶어 이에 대해 다루고자 한다. 본 글에서는 <strong>AWS EC2</strong> 인스턴스 내 <strong>Jenkins</strong>를 통해 <strong>CI</strong> 자동화에 대해 다루고자 한다. 현재 회사 특성상 <strong>CD</strong> 까지 진행하는데 어려움이 있을 듯 해 ‘<strong>CI&#x2F;CD</strong>’가 아닌, <strong>CI</strong>만을 다루고자 한다.</p>
+          <h1 id="서론"><a href="#서론" class="headerlink" title="서론"></a>서론</h1><p><a href="https://bigpie1367.github.io/2024/01/05/Web-Server%EB%B6%80%ED%84%B0-Nginx%EA%B9%8C%EC%A7%80/">이전 글</a>을 통해 <strong>Docker-compose</strong> 구성을 통한 각 서버별 <strong>Docker Container</strong>들을 구성하였는데, 진행하다 보니 <strong>CI</strong> 자동화도 알아보고 싶어 이에 대해 다루고자 한다. 본 글에서는 <strong>AWS EC2</strong> 인스턴스 내 <strong>Jenkins</strong>를 통해 <strong>CI</strong> 자동화에 대해 다루고자 한다. 현재 회사 특성상 <strong>CD</strong> 까지 진행하는데 어려움이 있을 듯 해 ‘<strong>CI&#x2F;CD</strong>’가 아닌, <strong>CI</strong>만을 다루고자 한다.</p>
 <p>&nbsp;<br>&nbsp;</p>
 <h1 id="본론"><a href="#본론" class="headerlink" title="본론"></a>본론</h1><h2 id="CI-CD-란"><a href="#CI-CD-란" class="headerlink" title="CI&#x2F;CD 란?"></a>CI&#x2F;CD 란?</h2><p><strong>CI</strong> &#x3D; 지속적인 통합(Continuous Integration)을 의미하는 단어로 ‘빌드와 테스트’를 자동화한 것이다.</p>
 <p><strong>CD</strong> &#x3D; 지속적인 전달(Continuous Delivery) or 지속적인 배포(Continuous Deployment)를 의미하는 단어로 CI가 완료된 이후 사용자에게 전달하는 배포 과정을 자동화한 것이다.</p>
@@ -248,7 +248,7 @@
 <p>&nbsp;</p>
 <p>전체 프로젝트 구성은 위 사진과 같다. 사용자가 코드를 깃 저장소에 올릴 경우 <strong>Github Webhook</strong>을 통해 해당 코드 내용을 <strong>Jenkins Docker Container</strong>에 반영한다. 이후 <strong>Jenkins</strong>가 <strong>Migration, Test</strong>를 비롯한 일련의 작업들을 수행하는 구조이다.</p>
 <p>위에서 언급했듯이 본 프로젝트에서는 <strong>CI</strong> 환경 구축만을 목표로 하였기 때문에 별도의 <strong>Docker</strong> <strong>Hub</strong>와의 연결 없이 테스트 단계에서 마무리하도록 하겠다.</p>
-<p>&nbsp;<br>&nbsp;</p>
+<p>&nbsp;</p>
 <h2 id="AWS-EC2-인스턴스-생성"><a href="#AWS-EC2-인스턴스-생성" class="headerlink" title="AWS EC2 인스턴스 생성"></a>AWS EC2 인스턴스 생성</h2><p>EC2에 대해 보다 자세히 다룬 글들이 존재하기에 참조할만한 링크만 추가한 뒤 본 글에서는 EC2 인스턴스를 통해 자동화하는 과정에 대해 집중적으로 다루고자 한다.</p>
 <blockquote>
 <p><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmF3cy5hbWF6b24uY29tL2tvX2tyL0FXU0VDMi9sYXRlc3QvVXNlckd1aWRlL2NvbmNlcHRzLmh0bWw=">Amazon EC2란 무엇인가요?<i class="fa fa-external-link-alt"></i></span></p>
