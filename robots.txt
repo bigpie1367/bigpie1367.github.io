@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: post-sitemap.xml,page-sitemap.xml
+Sitemap: sitemap.xml
