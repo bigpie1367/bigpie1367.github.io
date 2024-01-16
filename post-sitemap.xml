@@ -9,8 +9,16 @@
 
 
     <url>
+        <loc>https://bigpie1367.github.io/2024/01/16/NCP-MS-SQL-in-macOS/</loc>
+        <lastmod>2024-01-16T05:09:36.544Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://bigpie1367.github.io/2024/01/11/AWS-EC2-Jenkins%EB%A5%BC-%ED%86%B5%ED%95%9C-CI-%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95/</loc>
-        <lastmod>2024-01-12T04:20:42.574Z</lastmod>
+        <lastmod>2024-01-16T04:17:56.874Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -18,7 +26,7 @@
 
     <url>
         <loc>https://bigpie1367.github.io/2024/01/05/Web-Server%EB%B6%80%ED%84%B0-Nginx%EA%B9%8C%EC%A7%80/</loc>
-        <lastmod>2024-01-08T06:41:16.182Z</lastmod>
+        <lastmod>2024-01-16T04:17:47.350Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
