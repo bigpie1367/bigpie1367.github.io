@@ -18,10 +18,19 @@
       <guid>https://bigpie1367.github.io/2024/01/16/NCP-MS-SQL-in-macOS/</guid>
       <pubDate>Tue, 16 Jan 2024 04:15:18 GMT</pubDate>
       
-        
-        
-      <description>&lt;h1 id=&quot;서론&quot;&gt;&lt;a href=&quot;#서론&quot; class=&quot;headerlink&quot; title=&quot;서론&quot;&gt;&lt;/a&gt;서론&lt;/h1&gt;&lt;p&gt;최근 회사 업무로 인해 네이버 클라우드 플랫폼(이하 NCP)에 MS SQL DB를 구축해야 할 일이 생겼다. 이에 자료를 찾아</description>
-        
+      <description>&lt;h1 id=&quot;서론&quot;&gt;&lt;a href=&quot;#서론&quot; class=&quot;headerlink&quot; title=&quot;서론&quot;&gt;&lt;/a&gt;서론&lt;/h1&gt;&lt;p&gt;최근 회사 업무로 인해 네이버 클라우드 플랫폼(이하 NCP)에 MS SQL DB를 구축해야 할 일이 생겼다. 이에 자료를 찾아보니 Window 환경에서 MS SQL을 구축하는 정보들은 다수 존재하나 macOS 환경에서 구축하는 글은 드물어 관련 경험을 기록하고자 한다.&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;h1 id=&quot;본론&quot;&gt;&lt;a href=&quot;#본론&quot; class=&quot;headerlink&quot; title=&quot;본론&quot;&gt;&lt;/a&gt;본론&lt;/h1&gt;&lt;h2 id=&quot;NCP-설정&quot;&gt;&lt;a href=&quot;#NCP-설정&quot; class=&quot;headerlink&quot; title=&quot;NCP 설정&quot;&gt;&lt;/a&gt;NCP 설정&lt;/h2&gt;&lt;p&gt;기본적으로 MS SQL을 NCP에서 호스팅하기 위해선 2가지 방법이 존재한다. &lt;/p&gt;
+&lt;h3 id=&quot;Cloud-DB-for-mssql&quot;&gt;&lt;a href=&quot;#Cloud-DB-for-mssql&quot; class=&quot;headerlink&quot; title=&quot;Cloud DB for mssql&quot;&gt;&lt;/a&gt;Cloud DB for mssql&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;MSSQL을 위한 DBMS 및 각종 툴들이 설치된 상태&lt;/li&gt;
+&lt;li&gt;별도의 데이터베이스 설정 없이 웹상에서 바로 모니터링 및 이용 가능&lt;/li&gt;
+&lt;li&gt;스탠다드 기준 한달 62만원 정도의 비용 발생&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;Basic-Server&quot;&gt;&lt;a href=&quot;#Basic-Server&quot; class=&quot;headerlink&quot; title=&quot;Basic Server&quot;&gt;&lt;/a&gt;Basic Server&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;기본 Linux 서버로, MSSQL을 호스팅하기위한 별도의 설정이 필요함&lt;/li&gt;
+&lt;li&gt;Ubuntu 18.04 환경&lt;/li&gt;
+&lt;li&gt;스탠다드 기준 한달 7만원 정도의 비용 발생&lt;/li&gt;
+&lt;/ul&gt;</description>
       
       
       
@@ -44,10 +53,13 @@
       <guid>https://bigpie1367.github.io/2024/01/11/AWS-EC2-Jenkins%EB%A5%BC-%ED%86%B5%ED%95%9C-CI-%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95/</guid>
       <pubDate>Wed, 10 Jan 2024 23:28:47 GMT</pubDate>
       
-        
-        
-      <description>&lt;h1 id=&quot;서론&quot;&gt;&lt;a href=&quot;#서론&quot; class=&quot;headerlink&quot; title=&quot;서론&quot;&gt;&lt;/a&gt;서론&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;https://bigpie1367.github.io/2024/01/05/Web-Server%EB%B6%80%E</description>
-        
+      <description>&lt;h1 id=&quot;서론&quot;&gt;&lt;a href=&quot;#서론&quot; class=&quot;headerlink&quot; title=&quot;서론&quot;&gt;&lt;/a&gt;서론&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;https://bigpie1367.github.io/2024/01/05/Web-Server%EB%B6%80%ED%84%B0-Nginx%EA%B9%8C%EC%A7%80/&quot;&gt;이전 글&lt;/a&gt;을 통해 &lt;strong&gt;Docker-compose&lt;/strong&gt; 구성을 통한 각 서버별 &lt;strong&gt;Docker Container&lt;/strong&gt;들을 구성하였는데, 진행하다 보니 &lt;strong&gt;CI&lt;/strong&gt; 자동화도 알아보고 싶어 이에 대해 다루고자 한다. 본 글에서는 &lt;strong&gt;AWS EC2&lt;/strong&gt; 인스턴스 내 &lt;strong&gt;Jenkins&lt;/strong&gt;를 통해 &lt;strong&gt;CI&lt;/strong&gt; 자동화에 대해 다루고자 한다. 현재 회사 특성상 &lt;strong&gt;CD&lt;/strong&gt; 까지 진행하는데 어려움이 있을 듯 해 ‘&lt;strong&gt;CI&amp;#x2F;CD&lt;/strong&gt;’가 아닌, &lt;strong&gt;CI&lt;/strong&gt;만을 다루고자 한다.&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;&lt;/p&gt;
+&lt;h1 id=&quot;본론&quot;&gt;&lt;a href=&quot;#본론&quot; class=&quot;headerlink&quot; title=&quot;본론&quot;&gt;&lt;/a&gt;본론&lt;/h1&gt;&lt;h2 id=&quot;CI-CD-란&quot;&gt;&lt;a href=&quot;#CI-CD-란&quot; class=&quot;headerlink&quot; title=&quot;CI&amp;#x2F;CD 란?&quot;&gt;&lt;/a&gt;CI&amp;#x2F;CD 란?&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;CI&lt;/strong&gt; &amp;#x3D; 지속적인 통합(Continuous Integration)을 의미하는 단어로 ‘빌드와 테스트’를 자동화한 것이다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CD&lt;/strong&gt; &amp;#x3D; 지속적인 전달(Continuous Delivery) or 지속적인 배포(Continuous Deployment)를 의미하는 단어로 CI가 완료된 이후 사용자에게 전달하는 배포 과정을 자동화한 것이다.&lt;/p&gt;
+&lt;p&gt;즉, &lt;strong&gt;CI&lt;/strong&gt;는 개발 과정에서 필요한 빌드 및 테스트 단계를 자동화한 것이고 &lt;strong&gt;CD&lt;/strong&gt;는 테스트가 완료된 코드를 사용자에게 전달하기 위한 도구이다.&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;h2 id=&quot;프로젝트-구성&quot;&gt;&lt;a href=&quot;#프로젝트-구성&quot; class=&quot;headerlink&quot; title=&quot;프로젝트 구성&quot;&gt;&lt;/a&gt;프로젝트 구성&lt;/h2&gt;</description>
       
       
       
@@ -70,11 +82,21 @@
       <guid>https://bigpie1367.github.io/2024/01/05/Web-Server%EB%B6%80%ED%84%B0-Nginx%EA%B9%8C%EC%A7%80/</guid>
       <pubDate>Fri, 05 Jan 2024 03:42:10 GMT</pubDate>
       
-        
-        
       <description>&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-&lt;h1 id=&quot;서론&quot;&gt;&lt;a href=&quot;#서론&quot; class=&quot;headerlink&quot; title=&quot;서론&quot;&gt;&lt;/a&gt;서론&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;Nginx&lt;/strong&gt;(&lt;strong&gt;엔진엑스&lt;/strong&gt;) 에 대해 찾아보는 </description>
-        
+&lt;h1 id=&quot;서론&quot;&gt;&lt;a href=&quot;#서론&quot; class=&quot;headerlink&quot; title=&quot;서론&quot;&gt;&lt;/a&gt;서론&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;Nginx&lt;/strong&gt;(&lt;strong&gt;엔진엑스&lt;/strong&gt;) 에 대해 찾아보는 와중 기존 내가 알고있던 &lt;strong&gt;웹 서버&lt;/strong&gt;(&lt;strong&gt;Web Server&lt;/strong&gt;)에 대한 개념이 상충하는 것이 있어 이를 정리하고자 한다. 본 글에서는 &lt;strong&gt;Web Server&lt;/strong&gt;와 &lt;strong&gt;WAS&lt;/strong&gt;의 개념 비교부터 시작하여 가장 보편적으로 사용되는 &lt;strong&gt;Web Server&lt;/strong&gt; 엔진 및 실제 사용될 수 있는 프로젝트 구성을 &lt;strong&gt;Docker-compose&lt;/strong&gt;를 통해 구성해보고자 한다.&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;&lt;/p&gt;
+&lt;h1 id=&quot;본론&quot;&gt;&lt;a href=&quot;#본론&quot; class=&quot;headerlink&quot; title=&quot;본론&quot;&gt;&lt;/a&gt;본론&lt;/h1&gt;&lt;h2 id=&quot;Web-Server&quot;&gt;&lt;a href=&quot;#Web-Server&quot; class=&quot;headerlink&quot; title=&quot;Web Server&quot;&gt;&lt;/a&gt;Web Server&lt;/h2&gt;&lt;p&gt;위키백과에 정의된 웹 서버에 대한 정의는 다음과 같다&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://ko.wikipedia.org/wiki/%EC%9B%94%EB%93%9C_%EC%99%80%EC%9D%B4%EB%93%9C_%EC%9B%B9&quot;&gt;웹&lt;/a&gt; &lt;a href=&quot;https://ko.wikipedia.org/wiki/%EC%84%9C%EB%B2%84&quot;&gt;서버&lt;/a&gt;&lt;/strong&gt;(Web server)는 다음의 두 가지 뜻 가운데 하나이다.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;웹 서버: &lt;a href=&quot;https://ko.wikipedia.org/wiki/%EC%9B%B9_%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80&quot;&gt;웹 브라우저&lt;/a&gt;와 같은 클라이언트로부터 &lt;a href=&quot;https://ko.wikipedia.org/wiki/HTTP&quot;&gt;HTTP&lt;/a&gt; 요청을 받아들이고, &lt;a href=&quot;https://ko.wikipedia.org/wiki/HTML&quot;&gt;HTML&lt;/a&gt; 문서와 같은 웹 페이지를 반환하는 &lt;a href=&quot;https://ko.wikipedia.org/wiki/%EC%BB%B4%ED%93%A8%ED%84%B0_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8&quot;&gt;컴퓨터 프로그램&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;웹 서버 (하드웨어): 위에 언급한 기능을 제공하는 컴퓨터 프로그램을 실행하는 &lt;a href=&quot;https://ko.wikipedia.org/wiki/%EC%BB%B4%ED%93%A8%ED%84%B0&quot;&gt;컴퓨터&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;웹 서버&lt;/strong&gt;(web server)는 &lt;a href=&quot;https://ko.wikipedia.org/wiki/HTTP&quot;&gt;HTTP&lt;/a&gt; 또는 &lt;a href=&quot;https://ko.wikipedia.org/wiki/HTTPS&quot;&gt;HTTPS&lt;/a&gt;를 통해 &lt;a href=&quot;https://ko.wikipedia.org/wiki/%EC%9B%B9_%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80&quot;&gt;웹 브라우저&lt;/a&gt;에서 요청하는 [HTML 문서나 &lt;a href=&quot;https://ko.wikipedia.org/wiki/%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8&quot;&gt;오브젝트&lt;/a&gt;(&lt;a href=&quot;https://ko.wikipedia.org/wiki/%EC%9D%B4%EB%AF%B8%EC%A7%80_%ED%8C%8C%EC%9D%BC&quot;&gt;이미지 파일&lt;/a&gt; 등)을 &lt;a href=&quot;https://ko.wikipedia.org/wiki/%EC%A0%84%EC%86%A1_(%EC%BB%B4%ED%93%A8%ED%8C%85)&quot;&gt;전송&lt;/a&gt;해주는 &lt;a href=&quot;https://ko.wikipedia.org/wiki/%EC%84%9C%EB%B9%84%EC%8A%A4%ED%98%95_%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4&quot;&gt;서비스 프로그램&lt;/a&gt;을 말한다. 웹 서버 소프트웨어를 구동하는 &lt;a href=&quot;https://ko.wikipedia.org/wiki/%ED%95%98%EB%93%9C%EC%9B%A8%EC%96%B4&quot;&gt;하드웨어&lt;/a&gt;도 웹 서버라고 해서 혼동하는 경우가 간혹 있다.&lt;/p&gt;
+&lt;p&gt;출처 : &lt;a href=&quot;https://ko.wikipedia.org/wiki/%EC%9B%B9_%EC%84%9C%EB%B2%84&quot;&gt;https://ko.wikipedia.org/wiki/웹_서버&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;위에 정의된 바와 같이 &lt;strong&gt;웹 서버&lt;/strong&gt;란 &lt;strong&gt;HTTP, HTTPS&lt;/strong&gt; 통신 프로토콜을 통해 사용자가 요청하는 &lt;strong&gt;HTML 문서&lt;/strong&gt;나 &lt;strong&gt;오브젝트&lt;/strong&gt;, 즉 &lt;strong&gt;정적인 파일&lt;/strong&gt;들을 전달해주는 서비스 프로그램을 말한다. 다만 이러한 정적인 페이지들의 경우 과거에는 충분하였을 지 모르나 기술이 발달한 요즘 시대에는 부족한 것이 사실이다. 이러한 태생적인 한계를 극복하기 위한 것이 &lt;strong&gt;WAS(Web Application Server)&lt;/strong&gt; 이다.&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;&lt;/p&gt;</description>
       
       
       
