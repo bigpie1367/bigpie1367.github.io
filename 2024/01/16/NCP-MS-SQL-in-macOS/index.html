@@ -41,7 +41,7 @@
 <meta property="og:image" content="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/edc0a9d7-6c88-4069-9788-d06a6a86c988">
 <meta property="og:image" content="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/bf6091d3-ac23-48bc-a373-81b57661c3d7">
 <meta property="article:published_time" content="2024-01-16T04:15:18.000Z">
-<meta property="article:modified_time" content="2024-01-16T05:09:36.544Z">
+<meta property="article:modified_time" content="2024-01-16T05:13:15.297Z">
 <meta property="article:author" content="Suin Roh">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/669f5ec2-ccc3-4a1d-b80a-e55d4d9a56cd">
@@ -211,7 +211,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2024-01-16 13:15:18 / Modified: 14:09:36" itemprop="dateCreated datePublished" datetime="2024-01-16T13:15:18+09:00">2024-01-16</time>
+      <time title="Created: 2024-01-16 13:15:18 / Modified: 14:13:15" itemprop="dateCreated datePublished" datetime="2024-01-16T13:15:18+09:00">2024-01-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -290,7 +290,7 @@
 
 <p>&nbsp;</p>
 <img width="992" alt="%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2024-01-16_%E1%84%8B%E1%85%A9%E1%84%8C%E1%85%A5%E1%86%AB_10 38 09" src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/470d5181-9efe-4128-b102-fe383cc74040">
-<center>22번 포트(내부)를 20001번 포트(외부)로 포워딩</center>
+<center>`22`번 포트(내부)를 `20001`번 포트(외부)로 포워딩</center>
 
 <p>&nbsp;</p>
 <p>이후 <code>20001</code>번 포트를 외부 IP에서 접근할 수 있도록 ACG에서 허용해주어야 한다. ACG는 일종의 방화벽으로, NCP에서 제공하는 IP 기반 필터링 기능이다. 본 글에서는 추가로 이후의 DB 접근을 위한 <code>20002</code>번 포트를 개방해주었다.</p>
@@ -299,10 +299,10 @@
 
 <p>&nbsp;</p>
 <img width="1494" alt="%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2024-01-16_%E1%84%8B%E1%85%A9%E1%84%8C%E1%85%A5%E1%86%AB_10 37 22" src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/73696fec-c5b2-49fa-8e2a-1c1af1229a34">
-<center>20001 & 20002번 포트를 외부에서 접근할 수 있도록 허용</center>
+<center>`20001` & `20002`번 포트를 외부에서 접근할 수 있도록 허용</center>
 
 <p>&nbsp;</p>
-<p>SSH만을 이용해 해당 서버에 접근하여 이용할 경우는 서버 접속용 공인 IP를 통해 접근해 이용하면 되지만, 외부에서 SSH가 아닌 DB에 직접 접근할 경우 공인 IP 할당을 필요로 한다. 다만 공인 IP의 경우 추가로 비용이 발생하니 유의할 필요가 있다. 발급받고 부여하는 과정은 간단해 최종 이미지만 첨부하도록 하겠다.</p>
+<p>SSH만을 이용해 해당 서버에 접근하여 이용할 경우는 <code>서버 접속용 공인 IP</code>를 통해 접근해 이용하면 되지만, 외부에서 SSH가 아닌 DB에 직접 접근할 경우 <code>공인 IP</code> 할당을 필요로 한다. 다만 <code>공인 IP</code>의 경우 추가로 비용이 발생하니 유의할 필요가 있다. 발급받고 부여하는 과정은 간단해 최종 이미지만 첨부하도록 하겠다.</p>
 <img width="1223" alt="%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2024-01-16_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_12 41 29" src="https://github.com/bigpie1367/bigpie1367.github.io/assets/52846766/2b891d36-c23a-4913-99b0-bd816ec316ee">
 <center>공인 IP 비용</center>
 
@@ -340,7 +340,7 @@
 <center>MS SQL 접근에 성공할 경우 터미널 화면</center>
 
 <p>&nbsp;</p>
-<p>MSSQL에 정상적으로 접근됨을 확인하였으니 테이블을 생성해보자. 다만 필자는 MS SQL 문법을 다루는데 미숙함이 있어 해당 과정 또한 스크립트를 통해 자동화하였다. 아래 코드의 경우 테이블 정보를 비롯한 내용들은 본인의 필요에 따라 대체해야됨에 유의하자.</p>
+<p>MS SQL에 정상적으로 접근됨을 확인하였으니 테이블을 생성해보자. 다만 필자는 MS SQL 문법을 다루는데 미숙함이 있어 해당 과정 또한 스크립트를 통해 자동화하였다. 아래 코드의 경우 테이블 정보를 비롯한 내용들은 본인의 필요에 따라 대체해야됨에 유의하자.</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># your_own_table.sql</span></span><br><span class="line"></span><br><span class="line"><span class="string">CREATE</span> <span class="string">TABLE</span> <span class="string">Tablename(</span></span><br><span class="line">    <span class="string">YOUR_OWN_CODE;</span></span><br><span class="line"><span class="string">)</span></span><br></pre></td></tr></table></figure>
 
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># create_table.sh</span></span><br><span class="line"></span><br><span class="line">CONTAINER_NAME=mssql_service</span><br><span class="line">DB_USER=SA</span><br><span class="line">DB_PASS=YOUR_OWN_PASSWORD</span><br><span class="line">DB_NAME=master</span><br><span class="line"></span><br><span class="line">SQL_SCRIPT=./data/your_own_table.sql</span><br><span class="line"></span><br><span class="line">docker <span class="built_in">exec</span> -it <span class="variable">$CONTAINER_NAME</span> /opt/mssql-tools/bin/sqlcmd \</span><br><span class="line">    -S localhost -U <span class="variable">$DB_USER</span> -P <span class="variable">$DB_PASS</span> -d <span class="variable">$DB_NAME</span> \</span><br><span class="line">    -i <span class="variable">$SQL_SCRIPT</span></span><br></pre></td></tr></table></figure>
