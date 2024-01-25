@@ -124,7 +124,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -135,7 +135,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -160,6 +160,103 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://bigpie1367.github.io/2024/01/24/MS-SQL-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%86%A1%EC%88%98%EC%8B%A0-%EC%9E%90%EB%8F%99%ED%99%94/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Suin Roh">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="no_intellectual.log">
+      <meta itemprop="description" content="지적이지 못한 개발자의 로그">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | no_intellectual.log">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/01/24/MS-SQL-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%86%A1%EC%88%98%EC%8B%A0-%EC%9E%90%EB%8F%99%ED%99%94/" class="post-title-link" itemprop="url">MS SQL 데이터 송수신 자동화</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-01-24 09:22:24" itemprop="dateCreated datePublished" datetime="2024-01-24T09:22:24+09:00">2024-01-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-01-26 08:35:18" itemprop="dateModified" datetime="2024-01-26T08:35:18+09:00">2024-01-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Infra/" itemprop="url" rel="index"><span itemprop="name">Infra</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="서론"><a href="#서론" class="headerlink" title="서론"></a>서론</h1><h2 id="목적"><a href="#목적" class="headerlink" title="목적"></a>목적</h2><p>진행하는 프로젝트는 다른 외부 서비스로부터 우리 서비스에서 필요로하는 데이터를 수신받아야 하는데, 해당 외부 서비스에서 지원하는 DB가 <code>MS SQL</code>, <code>Oracle</code> 두 종류로 국한되는 상황이다. 반면 우리 프로젝트에서 사용할 DB는 <code>PostgreSQL</code> 이다. 때문에 해당 외부 서비스로부터 데이터아 우리 서버로 옮겨줄 중계 DB가 필요한데, 이를 Naver Cloud Platform 내 클라우드 서버를 통해 수신받을 예정이다. 해당 클라우드 서버 설정은 <a href="https://bigpie1367.github.io/2024/01/16/NCP-MS-SQL-in-macOS/">이전</a>에 다루었고 이번엔 수신받은 데이터를 어떻게 우리 서버로 옮길지에 대해 다루도록 하겠다.</p>
+<p>&nbsp;</p>
+<h2 id="고찰"><a href="#고찰" class="headerlink" title="고찰"></a>고찰</h2><p>네이버 클라우드상에 위치한 DB 서버로부터 데이터를 추출하기 위해선 다양한 방법이 있을 것 같다. 우선적으로 여러 방법들 중 어떤 방법이 가장 적절한지에 대해 고민하는 것이 선행되어야 할 필요가 있다. CSV 파일을 추출하여 <code>Gitlab</code>에 업로드하는 것도 고려하였으나, 사원 정보를 <code>Gitlab</code>과 같은 퍼블릭 저장소에 올리는 것은 적절한 방법이 아닌 것 같아 고려하지 않았다.</p>
+<p>&nbsp;</p>
+<h2 id="방법"><a href="#방법" class="headerlink" title="방법"></a>방법</h2><p>가장 처음 생각한 것은 데이터베이스에 데이터가 INSERT 되는 것을 감지하여 일련의 작업을 수행하는 것이었다. 찾아보니 <code>MSSQL Trigger</code>를 통해 데이터가 <code>INSERT</code> 되는 것을 감지할 수는 있으나, 해당 코드는 SQL 쿼리문으로만 작성되어야 했다. 수신 DB가 MSSQL로 동일하게 구현되었을 경우는 SQL 쿼리문을 통해 데이터 복사가 가능하였으나, 본 프로젝트엔 수신 DB가 PostgreSQL로 구현될 예정이기에 해당 방법은 배제하였다.</p>
+<h3 id="스크립트를-통한-자동화"><a href="#스크립트를-통한-자동화" class="headerlink" title="스크립트를 통한 자동화"></a>스크립트를 통한 자동화</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/01/24/MS-SQL-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%86%A1%EC%88%98%EC%8B%A0-%EC%9E%90%EB%8F%99%ED%99%94/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -197,9 +294,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2024-01-16 13:15:18 / Modified: 16:16:33" itemprop="dateCreated datePublished" datetime="2024-01-16T13:15:18+09:00">2024-01-16</time>
+      <time title="Created: 2024-01-16 13:15:18" itemprop="dateCreated datePublished" datetime="2024-01-16T13:15:18+09:00">2024-01-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-01-24 09:24:24" itemprop="dateModified" datetime="2024-01-24T09:24:24+09:00">2024-01-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -303,7 +406,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-01-16 16:15:13" itemprop="dateModified" datetime="2024-01-16T16:15:13+09:00">2024-01-16</time>
+      <time title="Modified: 2024-01-24 09:24:16" itemprop="dateModified" datetime="2024-01-24T09:24:16+09:00">2024-01-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -401,7 +504,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-01-16 16:15:31" itemprop="dateModified" datetime="2024-01-16T16:15:31+09:00">2024-01-16</time>
+      <time title="Modified: 2024-01-24 09:24:33" itemprop="dateModified" datetime="2024-01-24T09:24:33+09:00">2024-01-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
